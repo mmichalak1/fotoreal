@@ -1,6 +1,24 @@
 import math
 
 
+class sphere:
+	def __init__(self,center,radius):
+		self.center = center
+		self.radius = radius
+	# walić pythona ja chce moje typy zmiennych
+	def __setattr__(self, name, value):
+		if name == 'center' and not isinstance(value, vector):
+			raise TypeError('sphere.center must be of type: vector')
+		super().__setattr__(name, value)
+class plane:
+	def __init__(self,point,normal):
+		self.point = point
+		self.normal = normal
+	def __setattr__(self, name, value):
+		if name in ['point','normal'] and not isinstance(value, vector):
+			raise TypeError('sphere.{} must be of type: vector'.format(name))
+		super().__setattr__(name, value)
+
 class vector:
 	def __init__(self, a, b, c):
 		self.x = a
@@ -101,3 +119,5 @@ print(vec)
 print(vec.scalar(vec2))
 print(vec.cross(vec2))
 print(vec.normalize())
+sph = sphere(vec,2)
+pl = plane(vec,vec)
