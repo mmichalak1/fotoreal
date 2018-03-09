@@ -1,5 +1,21 @@
 import math
 
+class ray:
+	def __init__(self,origin,direction, distance = 0):
+		self.origin = origin
+		self.direction = direction
+		self.distance = distance
+	def __setattr__(self, name, value):
+		if name in ['origin','direction'] and not isinstance(value, vector):
+			raise TypeError('ray.{} must be of type: vector'.format(name))
+		if name == 'distance' and not isinstance(value, (int, float)):
+			raise TypeError('ray.distance must be a number')
+		super().__setattr__(name, value)
+	def __str__(self):
+		if (self.distance <= 0):
+			return ("(origin:{}, direction:{})".format(self.origin, self.direction))
+		else:
+			return ("(origin:{}, direction:{}, distance:{})".format(self.origin, self.direction, self.distance))
 
 class sphere:
 	def __init__(self,center,radius):
@@ -10,6 +26,8 @@ class sphere:
 		if name == 'center' and not isinstance(value, vector):
 			raise TypeError('sphere.center must be of type: vector')
 		super().__setattr__(name, value)
+	def __str__(self):
+		return ("(center:{}, radius:{})".format(self.center, self.radius))
 class plane:
 	def __init__(self,point,normal):
 		self.point = point
@@ -18,6 +36,8 @@ class plane:
 		if name in ['point','normal'] and not isinstance(value, vector):
 			raise TypeError('sphere.{} must be of type: vector'.format(name))
 		super().__setattr__(name, value)
+	def __str__(self):
+		return ("(point on plane:{}, normal:{})".format(self.point, self.normal))
 
 class vector:
 	def __init__(self, a, b, c):
@@ -120,4 +140,8 @@ print(vec.scalar(vec2))
 print(vec.cross(vec2))
 print(vec.normalize())
 sph = sphere(vec,2)
+print(sph)
 pl = plane(vec,vec)
+print(pl)
+r1 = ray(vec,vec)
+print(r1)
