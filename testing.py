@@ -1,5 +1,5 @@
-from types import *
 from collisions import *
+from types import *
 
 #intersection tests:
 #sphere - line tests
@@ -11,7 +11,7 @@ rayDir = vector(1,0,0)
 s = sphere(sphCenter, sphRadius)
 r = ray(rayOr, rayDir)
 
-result = rayShpereColl(r, s)
+result = raySphereColl(r, s)
 expected = vector(4, 0, 0)
 
 assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)
@@ -24,7 +24,7 @@ sphRadius = 1
 s = sphere(sphCenter, sphRadius)
 r = ray(rayOr, rayDir)
 
-result = rayShpereColl(r, s)
+result = raySphereColl(r, s)
 expected = vector(1, 0, 0)
 
 assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)
@@ -37,7 +37,7 @@ sphRadius = 1
 s = sphere(sphCenter, sphRadius)
 r = ray(rayOr, rayDir)
 
-result = rayShpereColl(r, s)
+result = raySphereColl(r, s)
 expected = None
 
 assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)

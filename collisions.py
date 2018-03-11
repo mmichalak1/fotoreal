@@ -7,7 +7,7 @@ EPS = 1e-6
 #b = 2 * ray.origin * ray.direction
 #c = ray.origin^2 - sphere.radius^2
 #liczymy delte ze wzoru: d = b^2 - 4ac
-def rayShpereColl(r, s):
+def raySphereColl(r, s):
 	if (not isinstance(r, ray) or not isinstance(s, sphere)):
 		print("ERROR: r or s is not ray or sphere")
 		return None

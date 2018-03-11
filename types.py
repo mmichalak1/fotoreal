@@ -1,4 +1,6 @@
 import math
+from collisions import *
+
 
 class ray:
 	def __init__(self,origin,direction, distance = 0):
@@ -16,7 +18,13 @@ class ray:
 			return ("(origin:{}, direction:{})".format(self.origin, self.direction))
 		else:
 			return ("(origin:{}, direction:{}, distance:{})".format(self.origin, self.direction, self.distance))
-
+	def iscolliding(self, other):
+		if isinstance(other, sphere):
+			return raySphereColl(self, other)
+		elif isinstance(other, plane):
+			return rayPlaneColl(self, other)
+		else:
+			NotImplementedError
 class sphere:
 	def __init__(self,center,radius):
 		self.center = center
@@ -40,7 +48,7 @@ class plane:
 	def __str__(self):
 		return ("(point on plane:{}, normal:{})".format(self.point, self.normal))
 	
-#self note: dot jest pod mnozeniem/scalar a cross pod funkcja cross
+#self note: dot jest pod mnozeniem a cross pod funkcja cross
 class vector:
 	def __init__(self, a=0, b=0, c=0):
 		self.x = a
@@ -94,7 +102,6 @@ class vector:
 		else:
 			return self.x == other.x and self.y == other.y and self.z == other.z
 #te już znowu potrzebne
-	def scalar(self, vect):
 		return ((self.x * vect.x) + (self.y * vect.y) + (self.z * vect.z))
 	def cross(self, vect):
 		return vector(self.y*vect.z - self.z*vect.y, self.z*vect.x - self.x*vect.z,self.x*vect.y - self.y * vect.x)
