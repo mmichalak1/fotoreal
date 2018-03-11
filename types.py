@@ -91,7 +91,8 @@ class vector:
 	def __eq__(self, other):
 		if not isinstance(other, vector):
 			NotImplementedError
-		return self.x == other.x and self.y == other.y and self.z == other.z
+		else:
+			return self.x == other.x and self.y == other.y and self.z == other.z
 #te już znowu potrzebne
 	def scalar(self, vect):
 		return ((self.x * vect.x) + (self.y * vect.y) + (self.z * vect.z))
