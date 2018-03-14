@@ -14,7 +14,7 @@ r = ray(rayOr, rayDir)
 result = raySphereColl(r, s)
 expected = vector(4, 0, 0)
 
-assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)
+assert result.hitPoint == expected, "Assertion error expected: {} result: {}".format(expected, result)
 
 #1 intersection
 rayOr = vector(1, -1, 0)
@@ -27,7 +27,7 @@ r = ray(rayOr, rayDir)
 result = raySphereColl(r, s)
 expected = vector(1, 0, 0)
 
-assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)
+assert result.hitPoint == expected, "Assertion error expected: {} result: {}".format(expected, result)
 
 #no intersection
 rayOr = vector(1, -1, 0)
@@ -40,7 +40,7 @@ r = ray(rayOr, rayDir)
 result = raySphereColl(r, s)
 expected = None
 
-assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)
+assert result.hitPoint == expected, "Assertion error expected: {} result: {}".format(expected, result)
 
 #plane - ray intersection
 #there is intersection:
@@ -56,7 +56,7 @@ p = plane(planePoint, planeNormal)
 result = rayPlaneColl(r, p)
 expected = vector(0, 1, 0)
 
-assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)
+assert result.hitPoint == expected, "Assertion error expected: {} result: {}".format(expected, result)
 
 #there is no intersection, ray and plane are parallel
 rayOr = vector(0, -1, 0)
@@ -71,7 +71,7 @@ p = plane(planePoint, planeNormal)
 result = rayPlaneColl(r, p)
 expected = None
 
-assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)
+assert result.hitPoint == expected, "Assertion error expected: {} result: {}".format(expected, result)
 
 #intersection is behind ray origin
 rayOr = vector(0, -1, 0)
@@ -86,6 +86,6 @@ p = plane(planePoint, planeNormal)
 result = rayPlaneColl(r, p)
 expected = None
 
-assert result == expected, "Assertion error expected: {} result: {}".format(expected, result)
+assert result.hitPoint == expected, "Assertion error expected: {} result: {}".format(expected, result)
 
 

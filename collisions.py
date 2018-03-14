@@ -1,5 +1,6 @@
 from types import *
 EPS = 1e-6
+	
 
 #bazowane w wzorze ax^2 + bx + c gdzie:
 #v = s.center - p.origin
@@ -23,16 +24,17 @@ def raySphereColl(r, s):
 		if root < 0:
 			return None
 		else:
-			return r.origin + r.direction * root
+			return hit(r, r.origin + r.direction * root, None, root)
 	rootA = (-b - math.sqrt(delta))/2
 	rootB = (-b + math.sqrt(delta))/2
 	if rootA < 0 and rootB < 0:
 		return None
 	if rootA < 0:
-		return r.origin + r.direction * rootB
+		return hit(r, r.origin + r.direction * rootB, None, rootB)
 	if rootB < 0:
-		return r.origin + r.direction * rootA
-	return r.origin + r.direction * min(rootA, rootB)
+		return hit(r, r.origin + r.direction * rootA, None, rootA)
+	root = min(rootA, rootB)
+	return hit(r, r.origin + r.direction * root, None, rootB)
 	
 #t = (d - N dot X) / (N dot V)
 #d = p.normal dot p.point
@@ -50,4 +52,4 @@ def rayPlaneColl(r, p):
 	# print("DEBUG: t={}".format(t))
 	if t < 0:
 		return None
-	return r.origin + r.direction * t
+	return hit(r, r.origin + r.direction * t, None, t)

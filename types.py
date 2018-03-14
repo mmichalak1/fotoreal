@@ -1,6 +1,18 @@
 import math
 from collisions import *
 
+class hit:
+	def __init__(self, ray, hitPoint, material, result):
+		self.ray = ray
+		self.hitPoint = hitPoint
+		self.material = material
+		self.result = result
+	
+	def __str__(self):
+		return "Collision with {} at {}".format(self.ray, self.hitPoint)
+	
+	def __eq__(self, other):
+		return self.ray == other.ray and self.hitPoint == other.hitPoint and self.material == other.material and self.result == other.result
 
 class ray:
 	def __init__(self,origin,direction, distance = 0):
