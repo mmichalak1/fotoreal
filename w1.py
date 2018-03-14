@@ -1,5 +1,5 @@
 from collisions import *
-from types import *
+from rendertypes import *
 
 
 sph = sphere(vector(), 10)

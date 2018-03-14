@@ -130,3 +130,11 @@ class vector:
 		return vector(-self.x, -self.y, -self.z)
 	__rmul__ = __mul__
 	__radd__ = __add__	
+
+class camera:
+	def __init__(self, position = vector(), direction = vector(0, 0, 1), 
+				 nearPlane = 10., farPlane = 1000.):
+		self.position = position
+		self.direction = direction
+		self.nearPlane = nearPlane
+		self.farPlane = farPlane
