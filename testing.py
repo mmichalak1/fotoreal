@@ -1,5 +1,5 @@
 from collisions import *
-from types import *
+from rendertypes import *
 
 #intersection tests:
 #sphere - line tests

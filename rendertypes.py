@@ -1,5 +1,5 @@
 import math
-from collisions import *
+
 
 class hit:
 	def __init__(self, ray, hitPoint, material, result):
@@ -10,9 +10,6 @@ class hit:
 	
 	def __str__(self):
 		return "Collision with {} at {}".format(self.ray, self.hitPoint)
-	
-	def __eq__(self, other):
-		return self.ray == other.ray and self.hitPoint == other.hitPoint and self.material == other.material and self.result == other.result
 
 class ray:
 	def __init__(self,origin,direction, distance = 0):
@@ -30,17 +27,11 @@ class ray:
 			return ("(origin:{}, direction:{})".format(self.origin, self.direction))
 		else:
 			return ("(origin:{}, direction:{}, distance:{})".format(self.origin, self.direction, self.distance))
-	def iscolliding(self, other):
-		if isinstance(other, sphere):
-			return raySphereColl(self, other)
-		elif isinstance(other, plane):
-			return rayPlaneColl(self, other)
-		else:
-			NotImplementedError
 class sphere:
-	def __init__(self,center,radius):
+	def __init__(self,center,radius, color):
 		self.center = center
 		self.radius = radius
+		self.color = color
 	# walić pythona ja chce moje typy zmiennych
 	def __setattr__(self, name, value):
 		if name == 'center' and not isinstance(value, vector):
@@ -131,10 +122,3 @@ class vector:
 	__rmul__ = __mul__
 	__radd__ = __add__	
 
-class camera:
-	def __init__(self, position = vector(), direction = vector(0, 0, 1), 
-				 nearPlane = 10., farPlane = 1000.):
-		self.position = position
-		self.direction = direction
-		self.nearPlane = nearPlane
-		self.farPlane = farPlane
