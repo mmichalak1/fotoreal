@@ -21,7 +21,7 @@ class ortocam:
 		hit = None
 		# print(objects)
 		for obj in objects:
-			tmp = raySphereColl(r, obj)
+			tmp = r.isColliding(obj)
 			if tmp != None:
 				distance = (tmp.hitPoint - r.origin).getLength()
 				if ( distance < minDistance):

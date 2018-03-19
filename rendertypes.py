@@ -1,4 +1,6 @@
 import math
+import collisions as coll
+
 
 
 class hit:
@@ -22,6 +24,13 @@ class ray:
 		if name == 'distance' and not isinstance(value, (int, float)):
 			raise TypeError('ray.distance must be a number')
 		super().__setattr__(name, value)
+	def isColliding(self, other):
+		if isinstance(other, sphere):
+			return coll.raySphereColl(self, other)
+		elif isinstance(other, plane):
+			return coll.rayPlaneColl(self, other)
+		else:
+			NotImplementedError
 	def __str__(self):
 		if (self.distance <= 0):
 			return ("(origin:{}, direction:{})".format(self.origin, self.direction))

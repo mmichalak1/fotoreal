@@ -1,4 +1,5 @@
-from rendertypes import *
+import rendertypes as rt
+import math
 EPS = 1e-6
 
 #bazowane w wzorze ax^2 + bx + c gdzie:
@@ -9,7 +10,7 @@ EPS = 1e-6
 #liczymy delte ze wzoru: d = b^2 - 4ac
 def raySphereColl(r, s):
 	#print(r, s)
-	if (not isinstance(r, ray) or not isinstance(s, sphere)):
+	if (not isinstance(r, rt.ray) or not isinstance(s, rt.sphere)):
 		print("ERROR: r or s is not ray or sphere")
 		return None
 	a = r.origin - s.center
@@ -24,17 +25,17 @@ def raySphereColl(r, s):
 		if root < 0:
 			return None
 		else:
-			return hit(r, r.origin + r.direction * root, s.color, root)
+			return rt.hit(r, r.origin + r.direction * root, s.color, root)
 	rootA = (-b - math.sqrt(delta))/2
 	rootB = (-b + math.sqrt(delta))/2
 	if rootA < 0 and rootB < 0:
 		return None
 	if rootA < 0:
-		return hit(r, r.origin + r.direction * rootB, s.color, rootB)
+		return rt.hit(r, r.origin + r.direction * rootB, s.color, rootB)
 	if rootB < 0:
-		return hit(r, r.origin + r.direction * rootA, s.color, rootA)
+		return rt.hit(r, r.origin + r.direction * rootA, s.color, rootA)
 	root = min(rootA, rootB)
-	return hit(r, r.origin + r.direction * root, s.color, rootB)
+	return rt.hit(r, r.origin + r.direction * root, s.color, rootB)
 
 #t = (d - N dot X) / (N dot V)
 #d = p.normal dot p.point
@@ -42,7 +43,7 @@ def raySphereColl(r, s):
 #X = r.origin
 #V = r.direction
 def rayPlaneColl(r, p):
-	if (not isinstance(r, ray) or not isinstance(p, plane)):
+	if (not isinstance(rt.r, ray) or not isinstance(rt.p, plane)):
 		print("ERROR: r or s is not ray or plane")
 		return None
 	if r.direction * p.normal < EPS:
@@ -52,4 +53,4 @@ def rayPlaneColl(r, p):
 	# print("DEBUG: t={}".format(t))
 	if t < 0:
 		return None
-	return hit(r, r.origin + r.direction * t, None, t)
+	return rt.hit(r, r.origin + r.direction * t, None, t)

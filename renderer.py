@@ -10,7 +10,7 @@ IMAGEHEIGTH = 600
 
 ASPECTRATIO = IMAGEWIDTH / IMAGEHEIGTH
 
-ORTOSIZEX = 500
+ORTOSIZEX = 800
 ORTOSIZEY = ORTOSIZEX / ASPECTRATIO
 
 XSTEP = ORTOSIZEX / IMAGEWIDTH
@@ -21,7 +21,7 @@ YSTEP = ORTOSIZEY / IMAGEHEIGTH
 # print(basicOrig)
 objects = []
 objects.append(sphere(vector(0,0,100), 50, Color("Red")))
-
+objects.append(sphere(vector(20, 20, 20), 30, Color("Green")))
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)
 
