@@ -36,16 +36,17 @@ class ortocam:
 			return hit.material
 	
 class perspectiveCam:
-	def __init__(self, position, direction, farPlane, nearPlane, fov, ratio, stepx, stepy):
+	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, ratio, stepx, stepy):
 		self.position = position
 		self.direction = direction
+		self.upVector = upVector
 		self.nearPlane = nearPlane
 		self.farPlane = farPlane
 		self.fov = fov
-		self.basicOrig = self.position - vector(self.getProjectionWidth / 2, self.getProjectionHeight / 2, -nearPlane)
 		self.ratio = ratio
 		self.stepx = stepx
 		self.stepy = stepy
+		self.basicOrig = self.position*direction.normalize()*nearPlane - (direction.normalize()*upVector.normalize())*(self.getProjectionWidth / 2) - upVector.normalize() * (self.getProjectionHeight/2)
 	def getProjectionWidth(self):
 		width = 1/(tan(self.fov/2)) * nearPlane
 		return 2*width
@@ -54,7 +55,7 @@ class perspectiveCam:
 		return heigth
 	def parsePixel(self, coord, objects):
 		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
-		rayOrig.x += self.stepx * coord[0]
-		rayOrig.y += self.stepy * coord[1] 
+		rayOrig.x += (direction.normalize()*upVector.normalize()) * self.stepx * coord[0]
+		rayOrig.y += upVector.normalize() * self.stepy * coord[1] 
 		
 	

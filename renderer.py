@@ -1,34 +1,22 @@
 from colour import Color
 from rendertypes import *
 from cameras import *
-import threading
 
 
 from PIL import Image
 
-IMAGEWIDTH  = 800
-IMAGEHEIGTH = 600
+IMAGEWIDTH  = 640
+IMAGEHEIGTH = 400
 
 ASPECTRATIO = IMAGEWIDTH / IMAGEHEIGTH
 
-ORTOSIZEX = 800
+ORTOSIZEX = 640
 ORTOSIZEY = ORTOSIZEX / ASPECTRATIO
 
 XSTEP = ORTOSIZEX / IMAGEWIDTH
 YSTEP = ORTOSIZEY / IMAGEHEIGTH
 
 # print(XSTEP, YSTEP)
-
-class pixelThread (threading.Thread):
-	def __init__(self, X,Y,depth,camera):
-		threading.Thread.__init__(self)
-		self.X = X
-		self.Y = Y
-		self.depth = depth
-		self.camera = camera
-	def run(self):
-		floatColToNum(AntyAliasing(self.camera,self.x,self.y,1))
-
 
 # print(basicOrig)
 threadLock = threading.Lock()
@@ -58,13 +46,13 @@ def AntyAliasing(camera,x,y,depth,iter=0):
 	RD = camera.parsePixel((x+step, y-step), objects)
 	if (iter < depth):
 		if(cent != LU):
-			LU = AntyAliasing(x-(step/2),y+(step/2),depth,(iter+1))
+			LU = AntyAliasing(camera,x-(step/2),y+(step/2),depth,(iter+1))
 		if(cent != LD):
-			LU = AntyAliasing(x-(step/2),y-(step/2),depth,(iter+1))
+			LU = AntyAliasing(camera,x-(step/2),y-(step/2),depth,(iter+1))
 		if(cent != RU):
-			LU = AntyAliasing(x+(step/2),y+(step/2),depth,(iter+1))
+			LU = AntyAliasing(camera,x+(step/2),y+(step/2),depth,(iter+1))
 		if(cent != RD):
-			LU = AntyAliasing(x+(step/2),y-(step/2),depth,(iter+1))	
+			LU = AntyAliasing(camera,x+(step/2),y-(step/2),depth,(iter+1))	
 	return addColor((divColor(LU,4),divColor(LD,4),divColor(RU,4),divColor(RD,4)))
 	
 	
@@ -84,9 +72,7 @@ def render(objects, camera):
 		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x-0.5, y-0.5), objects))
 		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x+0.5, y+0.5), objects))
 		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x+0.5, y-0.5), objects))
-		
-		#	pix[x,y] += floatColToNum(AntyAliasing(self.camera,self.x,self.y,1))
-			pix[x,y] = pixelThread(x,y,1,camera)			
+			pix[x,y] = floatColToNum(AntyAliasing(camera,x,y,3))
 			
 	img.show()
 
