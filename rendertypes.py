@@ -1,6 +1,6 @@
 import math
 import collisions as coll
-
+import threading
 
 
 class hit:
@@ -130,4 +130,3 @@ class vector:
 		return vector(-self.x, -self.y, -self.z)
 	__rmul__ = __mul__
 	__radd__ = __add__	
-
