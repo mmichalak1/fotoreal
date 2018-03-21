@@ -56,6 +56,20 @@ class perspectiveCam:
 	def parsePixel(self, coord, objects):
 		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
 		rayOrig.x += (direction.normalize()*upVector.normalize()) * self.stepx * coord[0]
-		rayOrig.y += upVector.normalize() * self.stepy * coord[1] 
-		
+		rayOrig.y += upVector.normalize() * self.stepy * coord[1]
+		r = ray(self.position, rayOrig - self.position)
+		minDistance = self.farPlane
+		hit = None
+		# print(objects)
+		for obj in objects:
+			tmp = r.isColliding(obj)
+			if tmp != None:
+				distance = (tmp.hitPoint - r.origin).getLength()
+				if ( distance < minDistance):
+					hit = tmp
+					minDistance = distance
+		if (hit == None):
+			return Color("white")
+		else:
+			return hit.material
 	
