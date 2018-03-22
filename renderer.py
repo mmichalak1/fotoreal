@@ -23,6 +23,8 @@ threadLock = threading.Lock()
 objects = []
 objects.append(sphere(vector(0,0,600), 50, Color("Red")))
 objects.append(sphere(vector(20, 20, 580), 30, Color("Green")))
+objects.append(plane(vector(-10,-10,0), vector(0,1,0), Color("Blue")))
+
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)
 def divColor(col, div):
@@ -76,6 +78,6 @@ def render(objects, camera):
 	img.show()
 
 #cam = ortocam(vector(), vector(0,0,1), 10000,ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
-cam = perspectiveCam(vector(0,0,0), vector(0,0,1), vector(0,1,0),10000, 1, 90, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
+cam = perspectiveCam(vector(600,0,600), vector(-1,0,0), vector(0,1,0),10000, 1, 90, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
 
 render(objects, cam)

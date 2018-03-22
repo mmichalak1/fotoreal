@@ -43,7 +43,7 @@ def raySphereColl(r, s):
 #X = r.origin
 #V = r.direction
 def rayPlaneColl(r, p):
-	if (not isinstance(rt.r, ray) or not isinstance(rt.p, plane)):
+	if (not isinstance(r, rt.ray) or not isinstance(p, rt.plane)):
 		print("ERROR: r or s is not ray or plane")
 		return None
 	if r.direction * p.normal < EPS:
@@ -53,4 +53,5 @@ def rayPlaneColl(r, p):
 	# print("DEBUG: t={}".format(t))
 	if t < 0:
 		return None
-	return rt.hit(r, r.origin + r.direction * t, None, t)
+	print("DEBUG: t={}".format(t))
+	return rt.hit(r, r.origin + r.direction * t, p.color, t)

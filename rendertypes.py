@@ -50,9 +50,10 @@ class sphere:
 		return ("(center:{}, radius:{})".format(self.center, self.radius))
 
 class plane:
-	def __init__(self,point,normal):
+	def __init__(self,point,normal, color):
 		self.point = point
 		self.normal = normal
+		self.color = color
 	def __setattr__(self, name, value):
 		if name in ['point','normal'] and not isinstance(value, vector):
 			raise TypeError('sphere.{} must be of type: vector'.format(name))
