@@ -5,19 +5,23 @@ import math
 from collisions import *
 
 class ortocam:
-	def __init__(self, position, direction, farPlane, width, heigth, stepx, stepy):
+	def __init__(self, position, direction, upVector, farPlane, width, height, stepx, stepy):
 		self.position = position
 		self.direction = direction
-		self.basicOrig = self.position - vector(width / 2, heigth / 2, 0)
+		self.upVector = upVector
+		self.rightVector = upVector.cross(direction)
+		self.basicOrig = self.position
+		self.basicOrig -= self.rightVector * (width/2)
+		self.basicOrig -= self.upVector * (height/2)
 		self.stepx = stepx
 		self.stepy = stepy
 		self.farPlane = farPlane
-		print(self.basicOrig)
+		# print(self.basicOrig)
 	
 	def parsePixel(self, coord, objects):
-		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
-		rayOrig.x += self.stepx * coord[0]
-		rayOrig.y += self.stepy * coord[1]
+		rayOrig  = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
+		rayOrig += self.rightVector * self.stepx * coord[0]
+		rayOrig += self.upVector * self.stepy * coord[1]
 		# print(rayOrig)
 		r = ray(rayOrig, self.direction)
 		minDistance = self.farPlane
