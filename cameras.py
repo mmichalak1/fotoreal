@@ -46,17 +46,17 @@ class perspectiveCam:
 		self.ratio = ratio
 		self.stepx = stepx
 		self.stepy = stepy
-		self.basicOrig = self.position*direction.normalize()*nearPlane - (direction.normalize()*upVector.normalize())*(self.getProjectionWidth / 2) - upVector.normalize() * (self.getProjectionHeight/2)
+		self.basicOrig = (self.position+(direction.normalize()*nearPlane)) - ((direction.normalize().cross(upVector.normalize()))*(self.getProjectionWidth() / 2)) - (upVector.normalize() * (self.getProjectionHeight() / 2))
 	def getProjectionWidth(self):
-		width = 1/(tan(self.fov/2)) * nearPlane
+		width = 1/(math.tan(self.fov/2)) * self.nearPlane
 		return 2*width
 	def getProjectionHeight(self):
-		heihgt = (1/self.ratio) * self.getProjectionWidth()
+		heigth = (1/self.ratio) * self.getProjectionWidth()
 		return heigth
 	def parsePixel(self, coord, objects):
 		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
-		rayOrig.x += (direction.normalize()*upVector.normalize()) * self.stepx * coord[0]
-		rayOrig.y += upVector.normalize() * self.stepy * coord[1]
+		rayOrig += self.direction.normalize().cross(self.upVector.normalize()) * (self.stepx * coord[0])
+		rayOrig += self.upVector.normalize() * self.stepy * coord[1]
 		r = ray(self.position, rayOrig - self.position)
 		minDistance = self.farPlane
 		hit = None
@@ -72,4 +72,3 @@ class perspectiveCam:
 			return Color("white")
 		else:
 			return hit.material
-	

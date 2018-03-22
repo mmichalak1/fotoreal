@@ -56,7 +56,6 @@ def AntyAliasing(camera,x,y,depth,iter=0):
 	return addColor((divColor(LU,4),divColor(LD,4),divColor(RU,4),divColor(RD,4)))
 	
 	
-	
 def render(objects, camera):
 	img = Image.new('RGB', (IMAGEWIDTH, IMAGEHEIGTH), 'black')
 	pix = img.load()
@@ -76,6 +75,7 @@ def render(objects, camera):
 			
 	img.show()
 
-cam = ortocam(vector(), vector(0,0,1), 10000,ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
-	
+#cam = ortocam(vector(), vector(0,0,1), 10000,ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
+cam = perspectiveCam(vector(0,0,0), vector(0,0,1), vector(0,1,0),10000, 1, 85, ASPECTRATIO, XSTEP, YSTEP)
+
 render(objects, cam)
