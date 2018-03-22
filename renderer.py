@@ -21,8 +21,8 @@ YSTEP = ORTOSIZEY / IMAGEHEIGTH
 # print(basicOrig)
 threadLock = threading.Lock()
 objects = []
-objects.append(sphere(vector(0,0,100), 50, Color("Red")))
-objects.append(sphere(vector(20, 20, 20), 30, Color("Green")))
+objects.append(sphere(vector(0,0,600), 50, Color("Red")))
+objects.append(sphere(vector(20, 20, 580), 30, Color("Green")))
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)
 def divColor(col, div):
@@ -76,6 +76,6 @@ def render(objects, camera):
 	img.show()
 
 #cam = ortocam(vector(), vector(0,0,1), 10000,ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
-cam = perspectiveCam(vector(0,0,0), vector(0,0,1), vector(0,1,0),10000, 1, 85, ASPECTRATIO, XSTEP, YSTEP)
+cam = perspectiveCam(vector(0,0,0), vector(0,0,1), vector(0,1,0),10000, 1, 90, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
 
 render(objects, cam)

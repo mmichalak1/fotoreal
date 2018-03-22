@@ -12,7 +12,7 @@ class ortocam:
 		self.stepx = stepx
 		self.stepy = stepy
 		self.farPlane = farPlane
-
+		print(self.basicOrig)
 	
 	def parsePixel(self, coord, objects):
 		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
@@ -36,28 +36,28 @@ class ortocam:
 			return hit.material
 	
 class perspectiveCam:
-	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, ratio, stepx, stepy):
+	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy):
 		self.position = position
 		self.direction = direction
 		self.upVector = upVector
 		self.nearPlane = nearPlane
 		self.farPlane = farPlane
 		self.fov = fov
-		self.ratio = ratio
+		self.width = width
+		self.height = height
 		self.stepx = stepx
 		self.stepy = stepy
-		self.basicOrig = (self.position+(direction.normalize()*nearPlane)) - ((direction.normalize().cross(upVector.normalize()))*(self.getProjectionWidth() / 2)) - (upVector.normalize() * (self.getProjectionHeight() / 2))
-	def getProjectionWidth(self):
-		width = 1/(math.tan(self.fov/2)) * self.nearPlane
-		return 2*width
-	def getProjectionHeight(self):
-		heigth = (1/self.ratio) * self.getProjectionWidth()
-		return heigth
+		self.basicOrig = (position+(direction.normalize()*self.getProjectionDistance())) - ((upVector.normalize().cross(direction.normalize()))*(width / 2)) - (upVector.normalize() * (height/ 2))
+		print(self.basicOrig)
+		print((upVector.normalize().cross(direction.normalize())))
+	def getProjectionDistance(self):
+		distance = (math.tan(math.radians(self.fov/2))) * self.width/2
+		return distance
 	def parsePixel(self, coord, objects):
 		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
-		rayOrig += self.direction.normalize().cross(self.upVector.normalize()) * (self.stepx * coord[0])
+		rayOrig += self.upVector.normalize().cross(self.direction.normalize()) * (self.stepx * coord[0])
 		rayOrig += self.upVector.normalize() * self.stepy * coord[1]
-		r = ray(self.position, rayOrig - self.position)
+		r = ray(self.position, (rayOrig - self.position).normalize())
 		minDistance = self.farPlane
 		hit = None
 		# print(objects)
