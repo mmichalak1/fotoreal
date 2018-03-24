@@ -64,9 +64,14 @@ class plane:
 #self note: dot jest pod mnozeniem a cross pod funkcja cross
 class vector:
 	def __init__(self, a=0, b=0, c=0):
-		self.x = a
-		self.y = b
-		self.z = c
+		if isinstance(a, vector):
+			self.x = a.x
+			self.y = a.y
+			self.z = a.z
+		else:
+			self.x = a
+			self.y = b
+			self.z = c
 	def getLengthPow2(self):
 		result = 0
 		result += self.x**2 

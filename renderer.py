@@ -50,19 +50,21 @@ def AntyAliasing(camera,x,y,depth,iter=0):
 		if(cent != LU):
 			LU = AntyAliasing(camera,x-(step/2),y+(step/2),depth,(iter+1))
 		if(cent != LD):
-			LU = AntyAliasing(camera,x-(step/2),y-(step/2),depth,(iter+1))
+			LD = AntyAliasing(camera,x-(step/2),y-(step/2),depth,(iter+1))
 		if(cent != RU):
-			LU = AntyAliasing(camera,x+(step/2),y+(step/2),depth,(iter+1))
+			RU = AntyAliasing(camera,x+(step/2),y+(step/2),depth,(iter+1))
 		if(cent != RD):
-			LU = AntyAliasing(camera,x+(step/2),y-(step/2),depth,(iter+1))	
+			RD = AntyAliasing(camera,x+(step/2),y-(step/2),depth,(iter+1))	
 	return addColor((divColor(LU,4),divColor(LD,4),divColor(RU,4),divColor(RD,4)))
 	
 	
 def render(objects, camera):
 	img = Image.new('RGB', (IMAGEWIDTH, IMAGEHEIGTH), 'black')
 	pix = img.load()
-	#print("HELLO")
+	# img.save("Hello.bmp")
+	print("Rendering..",end="", flush=True)
 	for x in range(0, IMAGEWIDTH):
+		print(".",end="", flush=True)
 		for y in range(0, IMAGEHEIGTH):
 			# print("render")
 		#	Tempcol = divColor(camera.parsePixel((x, y), objects),5)
@@ -73,11 +75,12 @@ def render(objects, camera):
 		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x-0.5, y-0.5), objects))
 		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x+0.5, y+0.5), objects))
 		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x+0.5, y-0.5), objects))
-			pix[x,y] = floatColToNum(AntyAliasing(camera,x,y,3))
+			pix[x,y] = floatColToNum(AntyAliasing(camera,x,y,4))
 			
 	img.show()
+	# img.save("Hello.bmp")
 
-# cam = ortocam(vector(), vector(0,0,1), vector(0,1,0), 10000,ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
+cam = ortocam(vector(), vector(0,0,1), vector(0, 1, 0), 10000, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
 cam = perspectiveCam(vector(600,0,600), vector(-1,0,0), vector(0,1,0),10000, 100, 90, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
 
 render(objects, cam)
