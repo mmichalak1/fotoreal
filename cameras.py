@@ -4,8 +4,28 @@ import sys
 import math
 from collisions import *
 
+
+def addColor(colors):
+	red = 0.
+	green = 0.
+	blue = 0.
+	print(colors[0].rgb, colors[1].rgb)
+	for color in colors:
+		red += color.red
+		green += color.green
+		blue += color.blue
+	col = Color()
+	col.red = max(min(red, 1.), 0.)
+	col.green = max(min(green, 1.), 0.)
+	col.blue = max(min(blue, 1.), 0.)
+	return col
+	
+def mulCol(c1, c2):
+	print(c1, c2)
+	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
+
 class ortocam:
-	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy):
+	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy, ambientLight):
 		self.position = position
 		self.direction = direction
 		self.upVector = upVector
@@ -16,6 +36,7 @@ class ortocam:
 		self.stepx = stepx
 		self.stepy = stepy
 		self.farPlane = farPlane
+		self.ambientLight = ambientLight
 		# print(self.rightVector)
 	
 	def parsePixel(self, coord, objects):
@@ -38,10 +59,10 @@ class ortocam:
 		if (hit == None):
 			return Color("white")
 		else:
-			return hit.material
+			return mulCol(hit.material, self.ambientLight)
 	
 class perspectiveCam:
-	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy):
+	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy, ambientLight):
 		self.position = position
 		self.direction = direction
 		self.upVector = upVector
@@ -53,6 +74,7 @@ class perspectiveCam:
 		self.stepx = stepx
 		self.stepy = stepy
 		self.basicOrig = (position+(direction.normalize()*self.getProjectionDistance())) - ((upVector.normalize().cross(direction.normalize()))*(width / 2)) - (upVector.normalize() * (height/ 2))
+		self.ambientLight = ambientLight
 		print(self.basicOrig)
 		print((upVector.normalize().cross(direction.normalize())))
 	def getProjectionDistance(self):

@@ -1,7 +1,5 @@
 import math
 import collisions as coll
-import threading
-
 
 class hit:
 	def __init__(self, ray, hitPoint, material, result):
@@ -135,4 +133,5 @@ class vector:
 	def __neg__(self):
 		return vector(-self.x, -self.y, -self.z)
 	__rmul__ = __mul__
-	__radd__ = __add__	
+	__radd__ = __add__
+		
