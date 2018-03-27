@@ -31,8 +31,8 @@ class ortocam:
 		self.upVector = upVector
 		self.rightVector = upVector.cross(direction)
 		self.basicOrig = vector(self.position)
-		self.basicOrig -= (self.rightVector * (width / 2) * stepx)
-		self.basicOrig -= (self.upVector * (heigth / 2) * stepy)
+		self.basicOrig -= (upVector.normalize().cross(direction.normalize()))*(width / 2)
+		self.basicOrig -= upVector.normalize() * (heigth/ 2)
 		self.stepx = stepx
 		self.stepy = stepy
 		self.farPlane = farPlane
