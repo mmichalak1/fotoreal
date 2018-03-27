@@ -32,7 +32,7 @@ class ortocam:
 		self.rightVector = upVector.cross(direction)
 		self.basicOrig = vector(self.position)
 		self.basicOrig -= (upVector.normalize().cross(direction.normalize()))*(width / 2)
-		self.basicOrig -= upVector.normalize() * (heigth/ 2)
+		self.basicOrig += upVector.normalize() * (heigth/ 2)
 		self.stepx = stepx
 		self.stepy = stepy
 		self.farPlane = farPlane
@@ -44,7 +44,7 @@ class ortocam:
 
 		rayOrig = vector(self.basicOrig)
 		rayOrig += self.rightVector * self.stepx * coord[0]
-		rayOrig += self.upVector * self.stepy * coord[1]
+		rayOrig -= self.upVector * self.stepy * coord[1]
 		# print(rayOrig)
 		r = ray(rayOrig, self.direction)
 		minDistance = self.farPlane
@@ -74,7 +74,7 @@ class perspectiveCam:
 		self.height = height
 		self.stepx = stepx
 		self.stepy = stepy
-		self.basicOrig = (position+(direction.normalize()*self.getProjectionDistance())) - ((upVector.normalize().cross(direction.normalize()))*(width / 2)) - (upVector.normalize() * (height/ 2))
+		self.basicOrig = (position+(direction.normalize()*self.getProjectionDistance())) - ((upVector.normalize().cross(direction.normalize()))*(width / 2)) + (upVector.normalize() * (height/ 2))
 		self.ambientLight = ambientLight
 		print(self.basicOrig)
 		print((upVector.normalize().cross(direction.normalize())))
@@ -84,7 +84,7 @@ class perspectiveCam:
 	def parsePixel(self, coord, objects):
 		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
 		rayOrig += self.upVector.normalize().cross(self.direction.normalize()) * (self.stepx * coord[0])
-		rayOrig += self.upVector.normalize() * self.stepy * coord[1]
+		rayOrig -= self.upVector.normalize() * self.stepy * coord[1]
 		r = ray(self.position, (rayOrig - self.position).normalize())
 		minDistance = self.farPlane
 		hit = None
