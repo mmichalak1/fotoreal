@@ -9,7 +9,7 @@ IMAGEHEIGTH = 600
 
 ASPECTRATIO = IMAGEWIDTH / IMAGEHEIGTH
 
-ORTOSIZEX = 1280
+ORTOSIZEX = 1366
 ORTOSIZEY = ORTOSIZEX / ASPECTRATIO
 
 XSTEP = ORTOSIZEX / IMAGEWIDTH
@@ -22,7 +22,8 @@ al = Color("lightyellow")
 objects = []
 objects.append(sphere(vector(0,0,600), 50, Color("Red")))
 objects.append(sphere(vector(20, 20, 580), 30, Color("Green")))
-objects.append(plane(vector(-10,-10,0), vector(1,1,0).normalize(), Color("Blue")))
+# objects.append(sphere(vector())
+objects.append(plane(vector(0,0,800), vector(0,0,1).normalize(), Color("Blue")))
 
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)
@@ -57,23 +58,12 @@ def render(objects, camera):
 	# img.save("Hello.bmp")
 	for x in range(0, IMAGEWIDTH):
 		for y in range(0, IMAGEHEIGTH):
-			# print("render")
-		#	Tempcol = divColor(camera.parsePixel((x, y), objects),5)
-		#	Tempcol = addColor((Tempcol,divColor(camera.parsePixel(((x-0.5), (y+0.5)), objects),5)))
-		#	Tempcol = addColor((Tempcol,divColor(camera.parsePixel(((x-0.5), (y-0.5)), objects),5)))
-		#	Tempcol = addColor((Tempcol,divColor(camera.parsePixel(((x+0.5), (y+0.5)), objects),5)))
-		#	Tempcol = addColor((Tempcol,divColor(camera.parsePixel(((x+0.5), (y+0.5)), objects),5)))
-		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x-0.5, y-0.5), objects))
-		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x+0.5, y+0.5), objects))
-		#	pix[x, y] += floatColToNumAA(camera.parsePixel((x+0.5, y-0.5), objects))
 			pix[x,y] = floatColToNum(AntyAliasing(camera,x,y,0))
-			# pixRendered += 1
-			# print("Rendering {}%".format((pixRendered/pixToRender)* 100), end="\r")
 			
 	img.show()
 	# img.save("Hello.bmp")
 
 cam = ortocam(vector(), vector(0,0,1), vector(0, 1, 0), 10000, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
-# cam = perspectiveCam(vector(600,0,600), vector(-1,0,0), vector(0,1,0),10000, 500, 90, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
+# cam = perspectiveCam(vector(), vector(0,0,1), vector(0,1,0),10000, 500, 90, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
 
 render(objects, cam)

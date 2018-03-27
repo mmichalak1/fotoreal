@@ -46,12 +46,12 @@ def rayPlaneColl(r, p):
 	if (not isinstance(r, rt.ray) or not isinstance(p, rt.plane)):
 		print("ERROR: r or s is not ray or plane")
 		return None
-	if r.direction * p.normal < EPS:
+	if abs(r.direction * p.normal) < EPS:
 		return None
 	d = p.normal * p.point
 	t = (d - p.normal * r.origin) / (p.normal * r.direction)
 	# print("DEBUG: t={}".format(t))
 	if t < 0:
 		return None
-	print("DEBUG: t={}".format(t))
+	# print("DEBUG: t={}".format(t))
 	return rt.hit(r, r.origin + r.direction * t, p.color, t)

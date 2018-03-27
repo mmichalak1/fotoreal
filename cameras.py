@@ -21,7 +21,7 @@ def addColor(colors):
 	return col
 	
 def mulCol(c1, c2):
-	print(c1, c2)
+	# print(c1, c2)
 	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
 
 class ortocam:
@@ -30,14 +30,15 @@ class ortocam:
 		self.direction = direction
 		self.upVector = upVector
 		self.rightVector = upVector.cross(direction)
-		self.basicOrig = self.position
-		self.basicOrig -= self.rightVector * (width / 2) * stepx
-		self.basicOrig -= self.upVector * (heigth / 2) * stepy
+		self.basicOrig = vector(self.position)
+		self.basicOrig -= (self.rightVector * (width / 2) * stepx)
+		self.basicOrig -= (self.upVector * (heigth / 2) * stepy)
 		self.stepx = stepx
 		self.stepy = stepy
 		self.farPlane = farPlane
 		self.ambientLight = ambientLight
-		# print(self.rightVector)
+		laspix = self.basicOrig + (self.rightVector * width * self.stepx) + (self.upVector * heigth * self.stepy) 
+		print(self.rightVector, self.basicOrig, laspix)
 	
 	def parsePixel(self, coord, objects):
 
@@ -98,4 +99,4 @@ class perspectiveCam:
 		if (hit == None):
 			return Color("white")
 		else:
-			return hit.material
+			return  mulCol(hit.material, self.ambientLight)
