@@ -38,10 +38,9 @@ class ortocam:
 		self.farPlane = farPlane
 		self.ambientLight = ambientLight
 		laspix = self.basicOrig + (self.rightVector * width * self.stepx) + (self.upVector * heigth * self.stepy) 
-		print(self.rightVector, self.basicOrig, laspix)
+		# print(self.rightVector, self.basicOrig, laspix)
 	
 	def parsePixel(self, coord, objects):
-
 		rayOrig = vector(self.basicOrig)
 		rayOrig += self.rightVector * self.stepx * coord[0]
 		rayOrig -= self.upVector * self.stepy * coord[1]
@@ -60,6 +59,7 @@ class ortocam:
 		if (hit == None):
 			return Color("white")
 		else:
+			# print("Hello")
 			return mulCol(hit.material, self.ambientLight)
 	
 class perspectiveCam:
@@ -76,8 +76,8 @@ class perspectiveCam:
 		self.stepy = stepy
 		self.basicOrig = (position+(direction.normalize()*self.getProjectionDistance())) - ((upVector.normalize().cross(direction.normalize()))*(width / 2)) + (upVector.normalize() * (height/ 2))
 		self.ambientLight = ambientLight
-		print(self.basicOrig)
-		print((upVector.normalize().cross(direction.normalize())))
+		# print(self.basicOrig)
+		# print((upVector.normalize().cross(direction.normalize())))
 	def getProjectionDistance(self):
 		distance = (math.tan(math.radians(self.fov/2))) * self.width/2
 		return distance
