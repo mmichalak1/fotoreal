@@ -8,25 +8,29 @@ from PIL import Image
 import multiprocess as mp
 from timeit import default_timer as timer
 
-IMAGEWIDTH  = 1980
-IMAGEHEIGTH = 1080
+IMAGEWIDTH  = 800
+IMAGEHEIGTH = 600
 
 ASPECTRATIO = IMAGEWIDTH / IMAGEHEIGTH
 
-ORTOSIZEX = 1366
+ORTOSIZEX = 400
 ORTOSIZEY = ORTOSIZEX / ASPECTRATIO
 
 XSTEP = ORTOSIZEX / IMAGEWIDTH
 YSTEP = ORTOSIZEY / IMAGEHEIGTH
 
 al = Color("lightyellow")
+t = triangle(vector(200, -20, 300), vector(400, 30, 300), vector(50, 50, 300), Color("Magenta"))
+t.direction *= -1
 objects = []
 objects.append(sphere(vector(0,0,600), 50, Color("Red")))
 objects.append(sphere(vector(20, 20, 580), 30, Color("Green")))
-objects.append(plane(vector(0,-29,800), vector(0,1,0).normalize(), Color("Blue")))
+objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), Color("Blue")))
+objects.append(t)
+	
 
 # cam = ortocam(vector(), vector(0,0,1), vector(0, 1, 0), 10000, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
-cam = perspectiveCam(vector(), vector(0,0,1), vector(0,1,0),10000, 10, 90, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
+cam = perspectiveCam(vector(), vector(0,0,1), vector(0,1,0),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
 
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)
@@ -38,7 +42,6 @@ def floatColToNum(color):
 def AntyAliasing(camera,x,y,depth,iter=0):
 	step = 1/((iter+1)*2)
 	cent = camera.parsePixel((x, y), objects)
-	return cent
 	LU = camera.parsePixel((x-step, y+step), objects)
 	LD = camera.parsePixel((x-step, y-step), objects)
 	RU = camera.parsePixel((x+step, y+step), objects)
@@ -68,7 +71,7 @@ def renderJob(width, heigth, xoffset, yoffset, d, id):
 	pix = img.load()
 	for x in range(width):
 		for y in range(heigth):
-			pix[x,y] = floatColToNum(AntyAliasing(cam,x + xoffset,y + yoffset,10))
+			pix[x,y] = floatColToNum(AntyAliasing(cam,x + xoffset,y + yoffset,2))
 	d[id]=img
 
 def bind(d, hh, hw):
@@ -98,10 +101,10 @@ def newrender():
 	img.show()
 	
 def main():
-	start = timer()
-	render()
-	end = timer()
-	print("Single process: {}".format(end - start))
+	# start = timer()
+	# render()
+	# end = timer()
+	# print("Single process: {}".format(end - start))
 	
 	start = timer()
 	newrender()

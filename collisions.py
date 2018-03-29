@@ -31,8 +31,10 @@ def raySphereColl(r, s):
 	if rootA < 0 and rootB < 0:
 		return None
 	if rootA < 0:
+		print("WARNING: inisde a sphere")
 		return rt.hit(r, r.origin + r.direction * rootB, s.color, rootB)
 	if rootB < 0:
+		print("WARNING: inisde a sphere")
 		return rt.hit(r, r.origin + r.direction * rootA, s.color, rootA)
 	root = min(rootA, rootB)
 	return rt.hit(r, r.origin + r.direction * root, s.color, rootB)
@@ -55,3 +57,30 @@ def rayPlaneColl(r, p):
 		return None
 	# print("DEBUG: t={}".format(t))
 	return rt.hit(r, r.origin + r.direction * t, p.color, t)
+	
+def rayTriangleColl(r, t):
+	p = rt.plane(t.v1, t.direction)
+	coll = r.isColliding(p)
+	if(coll == None):
+		print("nope")
+		return None
+	hit = coll.hitPoint
+	fa = t.v1 - hit
+	fb = t.v2 - hit
+	fc = t.v3 - hit
+	
+	cross = fa.cross(fb)
+	if cross * t.direction < 0:
+		return None
+	
+	cross = fb.cross(fc)
+	if cross * t.direction < 0:
+		return None
+	
+	cross = fc.cross(fa)
+	if cross * t.direction < 0:
+		return None
+	
+	# print("well hello there")
+	return rt.hit(r, coll.hitPoint, t.material, coll.result)
+	

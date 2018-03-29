@@ -27,6 +27,8 @@ class ray:
 			return coll.raySphereColl(self, other)
 		elif isinstance(other, plane):
 			return coll.rayPlaneColl(self, other)
+		elif isinstance(other, triangle):
+			return coll.rayTriangleColl(self, other)
 		else:
 			NotImplementedError
 	def __str__(self):
@@ -34,6 +36,8 @@ class ray:
 			return ("(origin:{}, direction:{})".format(self.origin, self.direction))
 		else:
 			return ("(origin:{}, direction:{}, distance:{})".format(self.origin, self.direction, self.distance))
+			
+
 class sphere:
 	def __init__(self,center,radius, color):
 		self.center = center
@@ -48,7 +52,7 @@ class sphere:
 		return ("(center:{}, radius:{})".format(self.center, self.radius))
 
 class plane:
-	def __init__(self,point,normal, color):
+	def __init__(self,point,normal, color=None):
 		self.point = point
 		self.normal = normal
 		self.color = color
@@ -135,3 +139,12 @@ class vector:
 	__rmul__ = __mul__
 	__radd__ = __add__
 		
+class triangle:
+	def __init__(self, v1, v2, v3, material):
+		edge1 = v1-v2
+		edge2 = v3-v2
+		self.direction = edge1.cross(edge2).normalize()
+		self.v1 = v1
+		self.v2 = v2
+		self.v3 = v3
+		self.material = material

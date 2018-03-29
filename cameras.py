@@ -9,7 +9,6 @@ def addColor(colors):
 	red = 0.
 	green = 0.
 	blue = 0.
-	print(colors[0].rgb, colors[1].rgb)
 	for color in colors:
 		red += color.red
 		green += color.green
@@ -21,7 +20,6 @@ def addColor(colors):
 	return col
 	
 def mulCol(c1, c2):
-	# print(c1, c2)
 	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
 
 class ortocam:
