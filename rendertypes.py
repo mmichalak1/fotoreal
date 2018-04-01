@@ -148,3 +148,9 @@ class triangle:
 		self.v2 = v2
 		self.v3 = v3
 		self.material = material
+		
+class scene:
+	def __init__(self, objects, ambientLight, lights):
+		self.objects = objects
+		self.ambientLight = ambientLight
+		self.lights = lights
