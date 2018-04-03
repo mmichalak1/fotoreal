@@ -143,7 +143,7 @@ class triangle:
 	def __init__(self, v1, v2, v3, material):
 		edge1 = v1-v2
 		edge2 = v3-v2
-		self.direction = edge1.cross(edge2).normalize()
+		self.direction = edge2.cross(edge1).normalize()
 		self.v1 = v1
 		self.v2 = v2
 		self.v3 = v3

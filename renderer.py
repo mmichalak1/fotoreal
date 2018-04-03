@@ -1,6 +1,7 @@
 from colour import *
 from rendertypes import *
 from cameras import *
+from objloader import *
 
 import numpy as np
 from PIL import Image
@@ -20,17 +21,19 @@ XSTEP = ORTOSIZEX / IMAGEWIDTH
 YSTEP = ORTOSIZEY / IMAGEHEIGTH
 
 al = Color("lightyellow")
+prs = parser()
+#prs.load_obj("E:/cube.obj")
 t = triangle(vector(200, -20, 300), vector(400, 30, 300), vector(50, 50, 300), Color("Magenta"))
-t.direction *= -1
 objects = []
 objects.append(sphere(vector(0,0,600), 50, Color("Red")))
 objects.append(sphere(vector(20, 20, 580), 30, Color("Green")))
 objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), Color("Blue")))
 objects.append(t)
+#objects.append(prs.triangles[0])
 	
 
 # cam = ortocam(vector(), vector(0,0,1), vector(0, 1, 0), 10000, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
-cam = perspectiveCam(vector(), vector(0,0,1), vector(0,1,0),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
+cam = perspectiveCam(vector(0,0,-100), vector(0,0,1), vector(0,1,0),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
 
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)
