@@ -41,7 +41,8 @@ class parser:
 			if "/" not in args[0]:
 				self.triangles.append(triangle(self.vertexes[int(args[0])-1],self.vertexes[int(args[1])-1],self.vertexes[int(args[2])-1], greyMat))
 		
-#prs = parser()
-#prs.load_obj("E:/cube.obj")
+prs = parser()
+prs.load_obj("cube.obj")
 #print(len(prs.vertexes))
-#print(len(prs.triangles))
+for tr in prs.triangles:
+	print((tr))

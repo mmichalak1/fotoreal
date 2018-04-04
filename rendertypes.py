@@ -153,7 +153,9 @@ class triangle:
 		self.v2 = v2
 		self.v3 = v3
 		self.material = material
-		
+	def __str__ (self):
+		return ("({},{},{}), direction: {}".format(self.v1, self.v2, self.v3, self.direction))
+	
 class scene:
 	def __init__(self, objects, ambientLight, lights):
 		self.objects = objects
