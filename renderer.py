@@ -24,20 +24,24 @@ magentaMat = material(Color("Magenta"), 20.0, 0.0, 0.2)
 blueMat = material(Color("Blue"), 50.0, 5.0, 1.0)
 greenMat = material(Color("Green"), 0.0, 0.0, 0.1)
 
+objects = []
+
 al = Color("lightyellow")
 prs = parser()
-#prs.load_obj("E:/cube.obj")
-t = triangle(vector(200, -20, 300), vector(400, 30, 300), vector(50, 50, 300), Color("Magenta"))
+prs.load_obj("cube.obj")
+t = triangle(vector(200, -20, 300), vector(400, 30, 300), vector(50, 50, 300), magentaMat)
 
 lights = []
 lights.append(pointLight(vector(0,0,500), Color("pink"), 1.0, 2.0, 3.0))
 objects.append(t)
-#objects.append(prs.triangles[0])
+objects.append(mesh(prs.triangles))
+#for tr in prs.triangles:
+#	objects.append(tr)
 sc = scene(objects, al, lights)
 	
 
 
-cam = perspectiveCam(vector(0,0,-100), vector(0,0,1), vector(0,1,0),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
+cam = perspectiveCam(vector(0,70,-100), vector(0,-1,10).normalize(), vector(0,10,1).normalize(),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
 
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)

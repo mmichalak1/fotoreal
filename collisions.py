@@ -62,7 +62,6 @@ def rayTriangleColl(r, t):
 	p = rt.plane(t.v1, t.direction)
 	coll = r.isColliding(p)
 	if(coll == None):
-		print("nope")
 		return None
 	hit = coll.hitPoint
 	fa = t.v1 - hit
@@ -84,3 +83,14 @@ def rayTriangleColl(r, t):
 	# print("well hello there")
 	return rt.hit(r, coll.hitPoint, t.material, coll.result)
 	
+def rayMeshColl(r,m):
+	hit = None
+	minDistance = 1000000000000
+	for obj in m.triangles:
+		tmp = rayTriangleColl(r, obj)
+		if tmp != None:
+			distance = (tmp.hitPoint - r.origin).getLength()
+			if ( distance < minDistance):
+				hit = tmp
+				minDistance = distance
+	return hit

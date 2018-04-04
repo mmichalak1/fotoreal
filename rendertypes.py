@@ -29,6 +29,8 @@ class ray:
 			return coll.rayPlaneColl(self, other)
 		elif isinstance(other, triangle):
 			return coll.rayTriangleColl(self, other)
+		elif isinstance(other,mesh):
+			return coll.rayMeshColl(self,other)
 		else:
 			NotImplementedError
 	def __str__(self):
@@ -143,7 +145,7 @@ class triangle:
 	def __init__(self, v1, v2, v3, material, direction = 0):
 		edge1 = v1-v2
 		edge2 = v3-v2
-		if direction isinstance(direction):
+		if isinstance(direction,vector):
 			self.direction = direction
 		else:
 			self.direction = edge2.cross(edge1).normalize()
@@ -172,3 +174,8 @@ class pointLight:
 		self.constAtt = constAtt
 		self.linAtt = linAtt
 		self.quadAtt = quadAtt
+
+class mesh:
+	def __init__(self, triangles, move = 0):
+		if move == 0:
+			self.triangles = triangles
