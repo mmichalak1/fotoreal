@@ -31,9 +31,10 @@ class parser:
 		if line_type == "f":
 			if "//" in args[0]:
 				vecs = []
+				norm = args[0].append(arg.split("//")[1])
 				for arg in args:
 					vecs.append(arg.split("//")[0])
-				self.triangles.append(triangle(self.vertexes[int(vecs[0])-1],self.vertexes[int(vecs[1])-1],self.vertexes[int(vecs[2])-1], Color("Grey")))
+				self.triangles.append(triangle(self.vertexes[int(vecs[0])-1],self.vertexes[int(vecs[1])-1],self.vertexes[int(vecs[2])-1], normals[int(norm)-1] ,Color("Grey")))
 			if "/" not in args[0]:
 				self.triangles.append(triangle(self.vertexes[int(args[0])-1],self.vertexes[int(args[1])-1],self.vertexes[int(args[2])-1], Color("Grey")))
 		

@@ -140,10 +140,13 @@ class vector:
 	__radd__ = __add__
 		
 class triangle:
-	def __init__(self, v1, v2, v3, material):
+	def __init__(self, v1, v2, v3, material, direction = 0):
 		edge1 = v1-v2
 		edge2 = v3-v2
-		self.direction = edge2.cross(edge1).normalize()
+		if direction isinstance(direction):
+			self.direction = direction
+		else:
+			self.direction = edge2.cross(edge1).normalize()
 		self.v1 = v1
 		self.v2 = v2
 		self.v3 = v3
