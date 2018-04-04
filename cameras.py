@@ -57,7 +57,7 @@ class ortocam:
 			return Color("white")
 		else:
 			# print("Hello")
-			return mulCol(hit.material, scene.ambientLight)
+			return mulCol(hit.material.dColor, scene.ambientLight)
 	
 class perspectiveCam:
 	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy):
@@ -95,4 +95,4 @@ class perspectiveCam:
 		if (hit == None):
 			return Color("white")
 		else:
-			return  mulCol(hit.material, scene.ambientLight)
+			return  mulCol(hit.material.dColor, scene.ambientLight)
