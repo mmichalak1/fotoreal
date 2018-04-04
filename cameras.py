@@ -23,7 +23,7 @@ def mulCol(c1, c2):
 	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
 
 class ortocam:
-	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy, ambientLight):
+	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy):
 		self.position = position
 		self.direction = direction
 		self.upVector = upVector
@@ -34,11 +34,10 @@ class ortocam:
 		self.stepx = stepx
 		self.stepy = stepy
 		self.farPlane = farPlane
-		self.ambientLight = ambientLight
 		laspix = self.basicOrig + (self.rightVector * width * self.stepx) + (self.upVector * heigth * self.stepy) 
 		# print(self.rightVector, self.basicOrig, laspix)
 	
-	def parsePixel(self, coord, objects):
+	def parsePixel(self, coord, scene):
 		rayOrig = vector(self.basicOrig)
 		rayOrig += self.rightVector * self.stepx * coord[0]
 		rayOrig -= self.upVector * self.stepy * coord[1]
@@ -47,7 +46,7 @@ class ortocam:
 		minDistance = self.farPlane
 		hit = None
 		# print(objects)
-		for obj in objects:
+		for obj in scene.objects:
 			tmp = r.isColliding(obj)
 			if tmp != None:
 				distance = (tmp.hitPoint - r.origin).getLength()
@@ -58,10 +57,10 @@ class ortocam:
 			return Color("white")
 		else:
 			# print("Hello")
-			return mulCol(hit.material, self.ambientLight)
+			return mulCol(hit.material.dColor, scene.ambientLight)
 	
 class perspectiveCam:
-	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy, ambientLight):
+	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy):
 		self.position = position
 		self.direction = direction
 		self.upVector = upVector
@@ -73,13 +72,12 @@ class perspectiveCam:
 		self.stepx = stepx
 		self.stepy = stepy
 		self.basicOrig = (position+(direction.normalize()*self.getProjectionDistance())) - ((upVector.normalize().cross(direction.normalize()))*(width / 2)) + (upVector.normalize() * (height/ 2))
-		self.ambientLight = ambientLight
 		# print(self.basicOrig)
 		# print((upVector.normalize().cross(direction.normalize())))
 	def getProjectionDistance(self):
 		distance = (math.tan(math.radians(self.fov/2))) * self.width/2
 		return distance
-	def parsePixel(self, coord, objects):
+	def parsePixel(self, coord, scene):
 		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
 		rayOrig += self.upVector.normalize().cross(self.direction.normalize()) * (self.stepx * coord[0])
 		rayOrig -= self.upVector.normalize() * self.stepy * coord[1]
@@ -87,7 +85,7 @@ class perspectiveCam:
 		minDistance = self.farPlane
 		hit = None
 		# print(objects)
-		for obj in objects:
+		for obj in scene.objects:
 			tmp = r.isColliding(obj)
 			if tmp != None:
 				distance = (tmp.hitPoint - r.origin).getLength()
@@ -97,4 +95,4 @@ class perspectiveCam:
 		if (hit == None):
 			return Color("white")
 		else:
-			return  mulCol(hit.material, self.ambientLight)
+			return  mulCol(hit.material.dColor, scene.ambientLight)

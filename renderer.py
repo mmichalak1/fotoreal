@@ -3,36 +3,40 @@ from rendertypes import *
 from cameras import *
 from objloader import *
 
-import numpy as np
 from PIL import Image
 
 import multiprocess as mp
 from timeit import default_timer as timer
 
-IMAGEWIDTH  = 800
-IMAGEHEIGTH = 600
+IMAGEWIDTH  = 400
+IMAGEHEIGTH = 400
 
 ASPECTRATIO = IMAGEWIDTH / IMAGEHEIGTH
 
-ORTOSIZEX = 400
+ORTOSIZEX = 100
 ORTOSIZEY = ORTOSIZEX / ASPECTRATIO
 
 XSTEP = ORTOSIZEX / IMAGEWIDTH
 YSTEP = ORTOSIZEY / IMAGEHEIGTH
 
+oliveMat = material(Color("olive"), 10.0, 50.0, 0.0)
+magentaMat = material(Color("Magenta"), 20.0, 0.0, 0.2)
+blueMat = material(Color("Blue"), 50.0, 5.0, 1.0)
+greenMat = material(Color("Green"), 0.0, 0.0, 0.1)
+
 al = Color("lightyellow")
 prs = parser()
 #prs.load_obj("E:/cube.obj")
 t = triangle(vector(200, -20, 300), vector(400, 30, 300), vector(50, 50, 300), Color("Magenta"))
-objects = []
-objects.append(sphere(vector(0,0,600), 50, Color("Red")))
-objects.append(sphere(vector(20, 20, 580), 30, Color("Green")))
-objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), Color("Blue")))
+
+lights = []
+lights.append(pointLight(vector(0,0,500), Color("pink"), 1.0, 2.0, 3.0))
 objects.append(t)
 #objects.append(prs.triangles[0])
+sc = scene(objects, al, lights)
 	
 
-# cam = ortocam(vector(), vector(0,0,1), vector(0, 1, 0), 10000, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
+
 cam = perspectiveCam(vector(0,0,-100), vector(0,0,1), vector(0,1,0),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP, al)
 
 def numColToFloat(color):
@@ -44,11 +48,11 @@ def floatColToNum(color):
 
 def AntyAliasing(camera,x,y,depth,iter=0):
 	step = 1/((iter+1)*2)
-	cent = camera.parsePixel((x, y), objects)
-	LU = camera.parsePixel((x-step, y+step), objects)
-	LD = camera.parsePixel((x-step, y-step), objects)
-	RU = camera.parsePixel((x+step, y+step), objects)
-	RD = camera.parsePixel((x+step, y-step), objects)
+	cent = camera.parsePixel((x, y), sc)
+	LU = camera.parsePixel((x-step, y+step), sc)
+	LD = camera.parsePixel((x-step, y-step), sc)
+	RU = camera.parsePixel((x+step, y+step), sc)
+	RD = camera.parsePixel((x+step, y-step), sc)
 	if (iter < depth):
 		if(cent != LU):
 			LU = AntyAliasing(camera,x-(step/2),y+(step/2),depth,(iter+1))
@@ -74,7 +78,7 @@ def renderJob(width, heigth, xoffset, yoffset, d, id):
 	pix = img.load()
 	for x in range(width):
 		for y in range(heigth):
-			pix[x,y] = floatColToNum(AntyAliasing(cam,x + xoffset,y + yoffset,2))
+			pix[x,y] = floatColToNum(AntyAliasing(cam,x + xoffset,y + yoffset,0))
 	d[id]=img
 
 def bind(d, hh, hw):

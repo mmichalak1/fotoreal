@@ -151,3 +151,24 @@ class triangle:
 		self.v2 = v2
 		self.v3 = v3
 		self.material = material
+		
+class scene:
+	def __init__(self, objects, ambientLight, lights):
+		self.objects = objects
+		self.ambientLight = ambientLight
+		self.lights = lights
+
+class material:
+	def __init__(self, dColor, specularAmount, specularCoeff, reflection):
+		self.dColor = dColor
+		self.specA = specularAmount
+		self.specCoeff = specularCoeff
+		self.refl = reflection
+		
+class pointLight:
+	def __init__(self, position, color, constAtt, linAtt, quadAtt):
+		self.position = position
+		self.color = color
+		self.constAtt = constAtt
+		self.linAtt = linAtt
+		self.quadAtt = quadAtt
