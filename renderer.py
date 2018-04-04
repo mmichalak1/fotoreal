@@ -29,7 +29,7 @@ objects = []
 al = Color("lightyellow")
 prs = parser()
 prs.load_obj("cube.obj")
-t = triangle(vector(200, -20, 300), vector(400, 30, 300), vector(50, 50, 300), magentaMat)
+t = triangle(vector(-50, -20, 50), vector(100, 110, 50), vector(130, 0, 50), magentaMat)
 
 lights = []
 lights.append(pointLight(vector(0,0,500), Color("pink"), 1.0, 2.0, 3.0))
@@ -41,7 +41,7 @@ sc = scene(objects, al, lights)
 	
 
 
-cam = perspectiveCam(vector(0,70,-100), vector(0,-1,10).normalize(), vector(0,10,1).normalize(),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
+cam = perspectiveCam(vector(-30,120,-100), vector(0,-1,10).normalize(), vector(0,10,1).normalize(),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
 
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)
@@ -112,10 +112,10 @@ def newrender():
 	img.show()
 	
 def main():
-	# start = timer()
-	# render()
-	# end = timer()
-	# print("Single process: {}".format(end - start))
+	#start = timer()
+	#render()
+	#end = timer()
+	#print("Single process: {}".format(end - start))
 	
 	start = timer()
 	newrender()
