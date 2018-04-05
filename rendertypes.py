@@ -2,11 +2,12 @@ import math
 import collisions as coll
 
 class hit:
-	def __init__(self, ray, hitPoint, material, result):
+	def __init__(self, ray, hitPoint, material, result, phit = None):
 		self.ray = ray
 		self.hitPoint = hitPoint
 		self.material = material
 		self.result = result
+		self.phit = phit
 	
 	def __str__(self):
 		return "Collision with {} at {}".format(self.ray, self.hitPoint)

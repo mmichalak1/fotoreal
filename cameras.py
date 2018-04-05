@@ -22,11 +22,22 @@ def addColor(colors):
 def mulCol(c1, c2):
 	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
 	
-def phong():
-	return 0
+def phong(hit, scene):
+	for light in scene.lights: 
+		hitToLight = (light.position - hit.hitPoint).normalize()
+		rayTolight = ray(hit.hitPoint, hitToLight)
+		directLight = True
+		for obj in scene.objects:
+			if rayTolight.isColliding(obj) != None:
+				directLight = False
+		# if directLight:
+			# shade = rayTolight * 
+		
+			
+	return mulCol(hit.material.dColor, scene.ambientLight)
 
 class ortocam:
-	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy):
+	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy, defcol = Color("white")):
 		self.position = position
 		self.direction = direction
 		self.upVector = upVector
@@ -37,9 +48,8 @@ class ortocam:
 		self.stepx = stepx
 		self.stepy = stepy
 		self.farPlane = farPlane
-		laspix = self.basicOrig + (self.rightVector * width * self.stepx) + (self.upVector * heigth * self.stepy) 
-		# print(self.rightVector, self.basicOrig, laspix)
-	
+		self.defcol = defcol
+		
 	def parsePixel(self, coord, scene):
 		rayOrig = vector(self.basicOrig)
 		rayOrig += self.rightVector * self.stepx * coord[0]
@@ -57,10 +67,10 @@ class ortocam:
 					hit = tmp
 					minDistance = distance
 		if (hit == None):
-			return Color("white")
+			return self.defcol
 		else:
 			# print("Hello")
-			return mulCol(hit.material.dColor, scene.ambientLight)
+			return phong(hit.material, scene.ambientLight)
 	
 class perspectiveCam:
 	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy):
@@ -98,4 +108,4 @@ class perspectiveCam:
 		if (hit == None):
 			return Color("white")
 		else:
-			return  mulCol(hit.material.dColor, scene.ambientLight)
+			return mulCol(hit.material.dColor, scene.ambientLight)

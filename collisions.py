@@ -31,13 +31,16 @@ def raySphereColl(r, s):
 	if rootA < 0 and rootB < 0:
 		return None
 	if rootA < 0:
-		print("WARNING: inisde a sphere")
-		return rt.hit(r, r.origin + r.direction * rootB, s.color, rootB)
+		print("WARNING: inside a sphere")
+		collPoint = r.origin + r.direction * rootB
+		return rt.hit(r, collPoint, s.color, rootB, (collPoint - s.center).normalize())
 	if rootB < 0:
-		print("WARNING: inisde a sphere")
-		return rt.hit(r, r.origin + r.direction * rootA, s.color, rootA)
+		print("WARNING: inside a sphere")
+		collPoint = r.origin + r.direction * rootA
+		return rt.hit(r, collPoint, s.color, rootA, (collPoint - s.center).normalize(),)
 	root = min(rootA, rootB)
-	return rt.hit(r, r.origin + r.direction * root, s.color, rootB)
+	collPoint = r.origin + r.direction * root
+	return rt.hit(r, collPoint, s.color, rootB, (collPoint - s.center).normalize())
 
 #t = (d - N dot X) / (N dot V)
 #d = p.normal dot p.point
