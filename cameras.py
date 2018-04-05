@@ -21,6 +21,9 @@ def addColor(colors):
 	
 def mulCol(c1, c2):
 	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
+	
+def phong():
+	return 0
 
 class ortocam:
 	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy):

@@ -8,8 +8,8 @@ from PIL import Image
 import multiprocess as mp
 from timeit import default_timer as timer
 
-IMAGEWIDTH  = 400
-IMAGEHEIGTH = 400
+IMAGEWIDTH  = 800
+IMAGEHEIGTH = 600
 
 ASPECTRATIO = IMAGEWIDTH / IMAGEHEIGTH
 
@@ -26,18 +26,26 @@ greenMat = material(Color("Green"), 0.0, 0.0, 0.1)
 
 objects = []
 
-al = Color("lightyellow")
+#new best cube
 prs = parser()
 prs.load_obj("cube.obj")
 t = triangle(vector(-50, -20, 50), vector(100, 110, 50), vector(130, 0, 50), magentaMat)
+objects.append(t)
+objects.append(mesh(prs.triangles))
+
+#old and ugly spheres
+# objects.append(triangle(vector(-50, -20, 50), vector(100, 110, 50), vector(130, 0, 50), magentaMat))
+# objects.append(sphere(vector(0,0,600), 50, oliveMat))
+# objects.append(sphere(vector(20, 20, 580), 30, greenMat))
+# objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), blueMat))
+
 
 lights = []
 lights.append(pointLight(vector(0,0,500), Color("pink"), 1.0, 2.0, 3.0))
-objects.append(t)
-objects.append(mesh(prs.triangles))
+
 #for tr in prs.triangles:
 #	objects.append(tr)
-sc = scene(objects, al, lights)
+sc = scene(objects, Color("lightyellow"), lights)
 	
 
 
