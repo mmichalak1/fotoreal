@@ -31,16 +31,19 @@ def raySphereColl(r, s):
 	if rootA < 0 and rootB < 0:
 		return None
 	if rootA < 0:
-		print("WARNING: inside a sphere")
+		#print("WARNING: inside a sphere")
 		collPoint = r.origin + r.direction * rootB
 		return rt.hit(r, collPoint, s.color, rootB, (collPoint - s.center).normalize())
 	if rootB < 0:
-		print("WARNING: inside a sphere")
+		#print("WARNING: inside a sphere")
 		collPoint = r.origin + r.direction * rootA
 		return rt.hit(r, collPoint, s.color, rootA, (collPoint - s.center).normalize(),)
 	root = min(rootA, rootB)
 	collPoint = r.origin + r.direction * root
-	return rt.hit(r, collPoint, s.color, rootB, (collPoint - s.center).normalize())
+	if(r.distance>0):
+		if((collPoint - r.origin).getLength() > r.distance):
+			return None
+	return rt.hit(r, collPoint, s.color, rootB, (collPoint - s.center).normalize(), s)
 
 #t = (d - N dot X) / (N dot V)
 #d = p.normal dot p.point
@@ -59,7 +62,11 @@ def rayPlaneColl(r, p):
 	if t < 0:
 		return None
 	# print("DEBUG: t={}".format(t))
-	return rt.hit(r, r.origin + r.direction * t, p.color, t)
+	collPoint = r.origin + r.direction * t
+	if(r.distance>0):
+		if((collPoint - r.origin).getLength() > r.distance):
+			return None
+	return rt.hit(r, collPoint, p.color, t, p.normal, p)
 	
 def rayTriangleColl(r, t):
 	p = rt.plane(t.v1, t.direction)
@@ -83,8 +90,11 @@ def rayTriangleColl(r, t):
 	if cross * t.direction < 0:
 		return None
 	
+	if(r.distance>0):
+		if((coll.hitPoint - r.origin).getLength() > r.distance):
+			return None
 	# print("well hello there")
-	return rt.hit(r, coll.hitPoint, t.material, coll.result)
+	return rt.hit(r, coll.hitPoint, t.material, coll.result, t.direction, t)
 	
 def rayMeshColl(r,m):
 	hit = None

@@ -22,19 +22,33 @@ def addColor(colors):
 def mulCol(c1, c2):
 	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
 	
-def phong(hit, scene):
+def phong(hit, Iray, scene):
+	color = Color(rgb = (0.0,0.0,0.0))
 	for light in scene.lights: 
-		hitToLight = (light.position - hit.hitPoint).normalize()
-		rayTolight = ray(hit.hitPoint, hitToLight)
+		hitToLight = (light.position - hit.hitPoint)
+		rayTolight = ray(hit.hitPoint, hitToLight.normalize(), hitToLight.getLength())
 		directLight = True
 		for obj in scene.objects:
-			if rayTolight.isColliding(obj) != None:
-				directLight = False
-		# if directLight:
-			# shade = rayTolight * 
-		
-			
-	return mulCol(hit.material.dColor, scene.ambientLight)
+			if hit.hitObj != obj: 
+				if rayTolight.isColliding(obj) != None:
+					directLight = False
+		if directLight:
+			reflectionVec =(hit.normal.normalize() * (hit.normal.normalize() *rayTolight.direction.normalize()) * 2.0) - rayTolight.direction.normalize() 
+			s = Iray.direction.normalize() * reflectionVec
+			s = (s)**hit.material.refl
+			s *= hit.material.specK
+			specCol = Color(rgb = (light.color.red * s,light.color.green * s, light.color.blue * s))
+			diff = rayTolight.direction.normalize() * hit.normal
+			if(diff <0):
+				diff = 0
+			diff *= hit.material.diffK
+			diffCol = Color(rgb = (light.color.red * diff,light.color.green * diff, light.color.blue * diff))
+			color = addColor((specCol,color))
+			color = addColor((color,diffCol))
+	
+	ambCol = Color(rgb = (scene.ambientLight.red * hit.material.ambK,scene.ambientLight.green * hit.material.ambK, scene.ambientLight.blue * hit.material.ambK))
+	color = addColor((color,ambCol))
+	return mulCol(hit.material.dColor, color)
 
 class ortocam:
 	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy, defcol = Color("white")):
@@ -70,7 +84,7 @@ class ortocam:
 			return self.defcol
 		else:
 			# print("Hello")
-			return phong(hit.material, scene.ambientLight)
+			return phong(hit.material, r,scene.ambientLight)
 	
 class perspectiveCam:
 	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy):
@@ -106,6 +120,7 @@ class perspectiveCam:
 					hit = tmp
 					minDistance = distance
 		if (hit == None):
-			return Color("white")
+			return Color("Black")
 		else:
-			return mulCol(hit.material.dColor, scene.ambientLight)
+			return phong(hit,r,scene)
+			#return mulCol(hit.material.dColor, scene.ambientLight)

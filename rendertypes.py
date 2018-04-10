@@ -2,13 +2,13 @@ import math
 import collisions as coll
 
 class hit:
-	def __init__(self, ray, hitPoint, material, result, phit = None):
+	def __init__(self, ray, hitPoint, material, result, normal = None, hitObj = None):
 		self.ray = ray
 		self.hitPoint = hitPoint
 		self.material = material
 		self.result = result
-		self.phit = phit
-	
+		self.normal = normal
+		self.hitObj = hitObj
 	def __str__(self):
 		return "Collision with {} at {}".format(self.ray, self.hitPoint)
 
@@ -164,10 +164,11 @@ class scene:
 		self.lights = lights
 
 class material:
-	def __init__(self, dColor, specularAmount, specularCoeff, reflection):
+	def __init__(self, dColor, ambCoeff, diffuseCoeff, specularCoeff, reflection):
 		self.dColor = dColor
-		self.specA = specularAmount
-		self.specCoeff = specularCoeff
+		self.ambK = ambCoeff
+		self.diffK = diffuseCoeff
+		self.specK = specularCoeff
 		self.refl = reflection
 		
 class pointLight:
