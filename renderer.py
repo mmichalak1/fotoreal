@@ -9,7 +9,7 @@ import multiprocess as mp
 from timeit import default_timer as timer
 
 IMAGEWIDTH  = 800
-IMAGEHEIGTH = 600
+IMAGEHEIGTH = 450
 
 ASPECTRATIO = IMAGEWIDTH / IMAGEHEIGTH
 
@@ -19,30 +19,30 @@ ORTOSIZEY = ORTOSIZEX / ASPECTRATIO
 XSTEP = ORTOSIZEX / IMAGEWIDTH
 YSTEP = ORTOSIZEY / IMAGEHEIGTH
 
-oliveMat = material(Color("olive"),0.5 , 0.5, 0.5, 80.0)
-magentaMat = material(Color("Magenta"),0.5, 0.5, 0.5, 80.0)
-blueMat = material(Color("Blue"),0.5, 0.5, 0.5, 80.0)
-greenMat = material(Color("Green"),0.5, 0.5, 0.5, 80.0)
-whiteMat = material(Color("White"),0.5, 0.5, 0.5, 80.0)
+oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0)
+magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0)
+blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0)
+greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0)
+whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0)
 
 objects = []
 
 #new best cube
-# prs = parser()
-# prs.load_obj("cube.obj")
-# t = triangle(vector(-50, -20, 50), vector(100, 110, 50), vector(130, 0, 50), magentaMat)
-# objects.append(t)
-# objects.append(mesh(prs.triangles))
+prs = parser()
+prs.load_obj("cube.obj", vector(-50,0,150),greenMat)
+#t = triangle(vector(-50, -20, 50), vector(100, 110, 50), vector(130, 0, 50), magentaMat)
+#objects.append(t)
+objects.append(mesh(prs.triangles))
 
 #old and ugly spheres
-objects.append(triangle(vector(-50, -20, 50), vector(100, 110, 50), vector(130, 0, 50), magentaMat))
+objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
 objects.append(sphere(vector(0,0,300), 50, oliveMat))
 objects.append(sphere(vector(20, 20, 280), 30, greenMat))
 objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), whiteMat))
 
 
 lights = []
-lights.append(pointLight(vector(0,500,0), Color("White"), 1.0, 2.0, 3.0))
+lights.append(pointLight(vector(0,500,-50), Color("White"), 1.0, 2.0, 3.0))
 
 #for tr in prs.triangles:
 #	objects.append(tr)
@@ -50,7 +50,7 @@ sc = scene(objects, Color("lightyellow"), lights)
 	
 
 # cam = ortocam(vector(-30,0,-100), vector(0,0,1), vector(0,1,0), 1000, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
-cam = perspectiveCam(vector(-30,120,0), vector(0,-1,10).normalize(), vector(0,10,1).normalize(),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
+cam = perspectiveCam(vector(-30,120,-50), vector(0,-1,10).normalize(), vector(0,10,1).normalize(),10000, 10, 60, ORTOSIZEX, ORTOSIZEY, XSTEP, YSTEP)
 
 def numColToFloat(color):
 	return tuple(x/256. for x in color.rgb)
@@ -60,8 +60,10 @@ def floatColToNum(color):
 	return tuple(int(x * 256) for x in color.rgb)
 
 def AntyAliasing(camera,x,y,depth,iter=0):
-	step = 1/((iter+1)*2)
 	cent = camera.parsePixel((x, y), sc)
+	if(depth<0):
+		return cent
+	step = 1/((iter+1)*2)
 	LU = camera.parsePixel((x-step, y+step), sc)
 	LD = camera.parsePixel((x-step, y-step), sc)
 	RU = camera.parsePixel((x+step, y+step), sc)

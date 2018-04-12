@@ -9,16 +9,19 @@ class parser:
 		self.normals = []
 		self.triangles = []
 		self.groups = []
-	def load_obj(self, filename):
+	def load_obj(self, filename, translation = vector(0,0,0), material = None):
 		file = open(filename, "r")
 		lines = file.readlines()	
 		for line in lines:
-			self.parse_line(line)
+			self.parse_line(line, translation, material)
 
-	def parse_line(self, line):
+	def parse_line(self, line, translation, material):
 		if line.startswith('#'):
 			return
-				
+		if material == None:
+			material = greyMat
+		if not isinstance(translation,vector):
+			return
 		values = line.split()
 		if len(values) < 2:
 			return
@@ -27,7 +30,7 @@ class parser:
 		if line_type == "g":
 			self.groups.append(args[0])
 		if line_type == "v":
-			self.vertexes.append(vector(float(args[0]),float(args[1]),float(args[2])))
+			self.vertexes.append(vector(float(args[0]) + translation.x,float(args[1])+translation.y,float(args[2])+translation.z))
 		if line_type == "vn":
 			self.normals.append(vector(float(args[0]),float(args[1]),float(args[2])))
 		if line_type == "f":
@@ -36,9 +39,9 @@ class parser:
 				norm = args[0].split("//")[1]
 				for arg in args:
 					vecs.append(arg.split("//")[0])
-				self.triangles.append(triangle(self.vertexes[int(vecs[0])-1],self.vertexes[int(vecs[1])-1],self.vertexes[int(vecs[2])-1],greyMat,self.normals[int(norm)-1] ))
+				self.triangles.append(triangle(self.vertexes[int(vecs[0])-1],self.vertexes[int(vecs[1])-1],self.vertexes[int(vecs[2])-1],material,self.normals[int(norm)-1] ))
 			if "/" not in args[0]:
-				self.triangles.append(triangle(self.vertexes[int(args[0])-1],self.vertexes[int(args[1])-1],self.vertexes[int(args[2])-1], greyMat))
+				self.triangles.append(triangle(self.vertexes[int(args[0])-1],self.vertexes[int(args[1])-1],self.vertexes[int(args[2])-1],material))
 		
 #prs = parser()
 #prs.load_obj("cube.obj")
