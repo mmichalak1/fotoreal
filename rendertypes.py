@@ -164,12 +164,13 @@ class scene:
 		self.lights = lights
 
 class material:
-	def __init__(self, dColor, ambCoeff, diffuseCoeff, specularCoeff, reflection):
+	def __init__(self, dColor, ambCoeff, diffuseCoeff, specularCoeff, reflection, texture = None):
 		self.dColor = dColor
 		self.ambK = ambCoeff
 		self.diffK = diffuseCoeff
 		self.specK = specularCoeff
 		self.refl = reflection
+		self.texture = texture
 		
 class pointLight:
 	def __init__(self, position, color, constAtt, linAtt, quadAtt):
@@ -183,3 +184,9 @@ class mesh:
 	def __init__(self, triangles, move = 0):
 		if move == 0:
 			self.triangles = triangles
+			
+class  texture:
+	def __init__(self,width,height,ColorMap = None)
+		self.width = width
+		self.height = height
+		self.ColorMap = ColorMap
