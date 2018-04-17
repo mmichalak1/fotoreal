@@ -59,6 +59,13 @@ def divColor(col, div):
 def floatColToNum(color):
 	return tuple(int(x * 256) for x in color.rgb)
 
+def spericalTexture(hit):
+	localHitPoint = hit.hitPoint - hit.hitObj.center
+	u= math.atan(localHitPoint.x/localHitPoint.z)/(2*math.pi)
+	v = 1 - math.acos(localHitPoint.y)/math.pi
+	return hit.hitObj.material.texture.getTexturePoint(u,v)
+	
+	
 def AntyAliasing(camera,x,y,depth,iter=0):
 	cent = camera.parsePixel((x, y), sc)
 	if(depth<0):

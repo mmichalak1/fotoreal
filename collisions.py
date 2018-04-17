@@ -43,10 +43,10 @@ def raySphereColl(r, s):
 	if(r.distance>0):
 		if((collPoint - r.origin).getLength() > r.distance):
 			return None
-	return rt.hit(r, collPoint, s.color, rootB, (collPoint - s.center).normalize(), s)
+	return rt.hit(r, collPoint, s.material, rootB, (collPoint - s.center).normalize(), s)
 
 #t = (d - N dot X) / (N dot V)
-#d = p.normal dot p.point
+#d = p.normal dot p.center
 #N = p.normal
 #X = r.origin
 #V = r.direction
@@ -56,7 +56,7 @@ def rayPlaneColl(r, p):
 		return None
 	if abs(r.direction * p.normal) < EPS:
 		return None
-	d = p.normal * p.point
+	d = p.normal * p.center
 	t = (d - p.normal * r.origin) / (p.normal * r.direction)
 	# print("DEBUG: t={}".format(t))
 	if t < 0:
@@ -66,7 +66,7 @@ def rayPlaneColl(r, p):
 	if(r.distance>0):
 		if((collPoint - r.origin).getLength() > r.distance):
 			return None
-	return rt.hit(r, collPoint, p.color, t, p.normal, p)
+	return rt.hit(r, collPoint, p.material, t, p.normal, p)
 	
 def rayTriangleColl(r, t):
 	p = rt.plane(t.v1, t.direction)

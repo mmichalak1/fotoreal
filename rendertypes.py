@@ -1,6 +1,9 @@
 import math
 import collisions as coll
 
+from colour import *
+from PIL import Image
+
 class hit:
 	def __init__(self, ray, hitPoint, material, result, normal = None, hitObj = None):
 		self.ray = ray
@@ -45,7 +48,7 @@ class sphere:
 	def __init__(self,center,radius, color):
 		self.center = center
 		self.radius = radius
-		self.color = color
+		self.material = color
 	# walić pythona ja chce moje typy zmiennych
 	def __setattr__(self, name, value):
 		if name == 'center' and not isinstance(value, vector):
@@ -54,11 +57,12 @@ class sphere:
 	def __str__(self):
 		return ("(center:{}, radius:{})".format(self.center, self.radius))
 
+
 class plane:
 	def __init__(self,point,normal, color=None):
-		self.point = point
+		self.center = point
 		self.normal = normal
-		self.color = color
+		self.material = color
 	def __setattr__(self, name, value):
 		if name in ['point','normal'] and not isinstance(value, vector):
 			raise TypeError('sphere.{} must be of type: vector'.format(name))
@@ -186,7 +190,15 @@ class mesh:
 			self.triangles = triangles
 			
 class  texture:
-	def __init__(self,width,height,ColorMap = None)
+	def __init__(self,width,height,image = None):
 		self.width = width
 		self.height = height
-		self.ColorMap = ColorMap
+		self.image = image
+	def load(self, filename):
+		self.image = Image.open(filename)
+	def getTexturePoint(self, u, v):
+		im = self.image.convert('RGB')
+		X = u*self.width
+		Y = v*self.height
+		r, g, b = im.getpixel((X, Y))
+		return Color(rgb=(r,g,b))
