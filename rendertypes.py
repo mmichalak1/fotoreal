@@ -190,15 +190,20 @@ class mesh:
 			self.triangles = triangles
 			
 class  texture:
-	def __init__(self,width,height,image = None):
+	def __init__(self,width,height, type = 0, image = None):
 		self.width = width
 		self.height = height
 		self.image = image
+		self.type = type
 	def load(self, filename):
-		self.image = Image.open(filename)
+		image = Image.open(filename)
+		self.image = image.convert('RGB')
 	def getTexturePoint(self, u, v):
-		im = self.image.convert('RGB')
-		X = u*self.width
-		Y = v*self.height
-		r, g, b = im.getpixel((X, Y))
-		return Color(rgb=(r,g,b))
+		X = int(u*self.width)
+		Y = int(v*self.height)
+		r, g, b = self.image.getpixel((X, Y))
+		return Color(rgb=(r/256,g/256,b/256))
+	def getRawPoint(self, u, v):
+		r, g, b = self.image.getpixel((u, v))
+		return Color(rgb=(r/256,g/256,b/256))
+		

@@ -19,14 +19,19 @@ ORTOSIZEY = ORTOSIZEX / ASPECTRATIO
 XSTEP = ORTOSIZEX / IMAGEWIDTH
 YSTEP = ORTOSIZEY / IMAGEHEIGTH
 
+
+
 text = texture(600,300)
 text.load("phobos.gif")
+
+rectText = texture(340, 340, 1)
+rectText.load("rectTex.jpg")
 
 oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0)
 magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0)
 blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0)
 greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, text)
-whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0)
+whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0, rectText)
 
 objects = []
 
@@ -38,9 +43,9 @@ objects = []
 #objects.append(mesh(prs.triangles))
 
 #old and ugly spheres
-objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
-objects.append(sphere(vector(0,0,300), 50, oliveMat))
-objects.append(sphere(vector(20, 20, 280), 30, greenMat))
+#objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
+#objects.append(sphere(vector(0,0,300), 50, oliveMat))
+#objects.append(sphere(vector(20, 20, 280), 30, greenMat))
 objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), whiteMat))
 
 

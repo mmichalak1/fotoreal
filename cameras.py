@@ -4,6 +4,7 @@ import sys
 import math
 from collisions import *
 
+phong = True
 
 def addColor(colors):
 	red = 0.
@@ -28,7 +29,12 @@ def spericalTexture(hit):
 	v = 1 - math.acos(localHitPoint.y)/math.pi
 	return hit.hitObj.material.texture.getTexturePoint(u,v)
 		
-
+def rectTexture(hit):
+	localHitPoint = hit.hitPoint - hit.hitObj.center
+	u = localHitPoint.x % hit.material.texture.width-1
+	v = localHitPoint.z % hit.material.texture.height-1
+	return hit.material.texture.getRawPoint(u, v)
+		
 def phong(hit, Iray, scene):
 	color = Color(rgb = (0.0,0.0,0.0))
 	for light in scene.lights: 
@@ -55,10 +61,12 @@ def phong(hit, Iray, scene):
 	
 	ambCol = Color(rgb = (scene.ambientLight.red * hit.material.ambK,scene.ambientLight.green * hit.material.ambK, scene.ambientLight.blue * hit.material.ambK))
 	color = addColor((color,ambCol))
-	
 	if(hit.material.texture != None):
-		return mulCol(spericalTexture(hit), color)
-	return mulCol(hit.material.dColor, color)
+		if hit.material.texture.type == 0:
+			return mulCol(spericalTexture(hit), color)
+		elif hit.material.texture.type == 1:
+			return mulCol(rectTexture(hit), color)
+	
 
 class ortocam:
 	def __init__(self, position, direction, upVector, farPlane, width, heigth, stepx, stepy, defcol = Color("white")):
@@ -133,4 +141,3 @@ class perspectiveCam:
 			return Color("Black")
 		else:
 			return phong(hit,r,scene)
-			#return mulCol(hit.material.dColor, scene.ambientLight)
