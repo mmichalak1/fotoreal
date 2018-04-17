@@ -19,20 +19,23 @@ ORTOSIZEY = ORTOSIZEX / ASPECTRATIO
 XSTEP = ORTOSIZEX / IMAGEWIDTH
 YSTEP = ORTOSIZEY / IMAGEHEIGTH
 
+text = texture(600,300)
+text.load("phobos.gif")
+
 oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0)
 magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0)
 blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0)
-greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0)
+greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, text)
 whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0)
 
 objects = []
 
 #new best cube
-prs = parser()
-prs.load_obj("cube.obj", vector(-50,0,150),greenMat)
+#prs = parser()
+#prs.load_obj("cube.obj", vector(-50,0,150),greenMat)
 #t = triangle(vector(-50, -20, 50), vector(100, 110, 50), vector(130, 0, 50), magentaMat)
 #objects.append(t)
-objects.append(mesh(prs.triangles))
+#objects.append(mesh(prs.triangles))
 
 #old and ugly spheres
 objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
@@ -59,12 +62,7 @@ def divColor(col, div):
 def floatColToNum(color):
 	return tuple(int(x * 256) for x in color.rgb)
 
-def spericalTexture(hit):
-	localHitPoint = hit.hitPoint - hit.hitObj.center
-	u= math.atan(localHitPoint.x/localHitPoint.z)/(2*math.pi)
-	v = 1 - math.acos(localHitPoint.y)/math.pi
-	return hit.hitObj.material.texture.getTexturePoint(u,v)
-	
+
 	
 def AntyAliasing(camera,x,y,depth,iter=0):
 	cent = camera.parsePixel((x, y), sc)

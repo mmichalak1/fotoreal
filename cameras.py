@@ -22,6 +22,13 @@ def addColor(colors):
 def mulCol(c1, c2):
 	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
 	
+def spericalTexture(hit):
+	localHitPoint = hit.hitPoint - hit.hitObj.center
+	u= math.atan(localHitPoint.x/localHitPoint.z)/(2*math.pi)
+	v = 1 - math.acos(localHitPoint.y)/math.pi
+	return hit.hitObj.material.texture.getTexturePoint(u,v)
+		
+
 def phong(hit, Iray, scene):
 	color = Color(rgb = (0.0,0.0,0.0))
 	for light in scene.lights: 
@@ -48,6 +55,9 @@ def phong(hit, Iray, scene):
 	
 	ambCol = Color(rgb = (scene.ambientLight.red * hit.material.ambK,scene.ambientLight.green * hit.material.ambK, scene.ambientLight.blue * hit.material.ambK))
 	color = addColor((color,ambCol))
+	
+	if(hit.material.texture != None):
+		return mulCol(spericalTexture(hit), color)
 	return mulCol(hit.material.dColor, color)
 
 class ortocam:
