@@ -43,9 +43,9 @@ objects = []
 #objects.append(mesh(prs.triangles))
 
 #old and ugly spheres
-#objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
-#objects.append(sphere(vector(0,0,300), 50, oliveMat))
-#objects.append(sphere(vector(20, 20, 280), 30, greenMat))
+objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
+objects.append(sphere(vector(0,0,300), 50, greenMat))
+objects.append(sphere(vector(20, 20, 280), 30, oliveMat))
 objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), whiteMat))
 
 

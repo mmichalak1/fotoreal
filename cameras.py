@@ -24,9 +24,14 @@ def mulCol(c1, c2):
 	return Color(rgb=(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue))
 	
 def spericalTexture(hit):
-	localHitPoint = hit.hitPoint - hit.hitObj.center
-	u= math.atan(localHitPoint.x/localHitPoint.z)/(2*math.pi)
+	localHitPoint = (hit.hitPoint - hit.hitObj.center)/hit.hitObj.radius
+	u= math.atan(localHitPoint.x/localHitPoint.z)
 	v = 1 - math.acos(localHitPoint.y)/math.pi
+	if(u<0):
+		u += math.pi*2
+	u /= (2*math.pi)
+	
+	#print("({},{})".format(u,v))
 	return hit.hitObj.material.texture.getTexturePoint(u,v)
 		
 def rectTexture(hit):

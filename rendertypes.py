@@ -197,6 +197,9 @@ class  texture:
 		self.type = type
 	def load(self, filename):
 		image = Image.open(filename)
+		w, h = image.size
+		self.width = w
+		self.height = h
 		self.image = image.convert('RGB')
 	def getTexturePoint(self, u, v):
 		X = int(u*self.width)
