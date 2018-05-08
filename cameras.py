@@ -57,8 +57,8 @@ def phong(hit, Iray, scene, rec):
 						if ( distance < minDistance):
 							reflHit = tmpHit
 							minDistance = distance
-						if reflHit != None:
-							color = addColor(phong(reflHit,reflRey, scene,rec-1), color)
+			if reflHit != None:
+				color = addColor(phong(reflHit,reflRey, scene,rec-1), color)
 	if hit.material.refraction > 1:
 		pass
 	for light in scene.lights: 
