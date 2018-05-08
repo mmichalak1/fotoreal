@@ -30,8 +30,8 @@ rectText.load("rectTex.jpg")
 oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0, 0, True)
 magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0, 0, False)
 blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0, 0, False)
-greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, 0, True, text)
-whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0, 0, False, rectText)
+greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, 0, True)
+whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0, 0, False)
 
 objects = []
 
@@ -44,8 +44,8 @@ objects = []
 
 #old and ugly spheres
 objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
-objects.append(sphere(vector(0,0,300), 50, greenMat))
-objects.append(sphere(vector(80, 0, 300), 30, oliveMat))
+objects.append(sphere(vector(-20,0,200), 90, greenMat))
+objects.append(sphere(vector(100, 0, 200), 80, oliveMat))
 objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), whiteMat))
 
 
