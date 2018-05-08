@@ -27,11 +27,11 @@ text.load("phobos.gif")
 rectText = texture(340, 340, 1)
 rectText.load("rectTex.jpg")
 
-oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0)
-magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0)
-blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0)
-greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, text)
-whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0, rectText)
+oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0, True)
+magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0, False)
+blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0, False)
+greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, True, text)
+whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0, False, rectText)
 
 objects = []
 
@@ -45,7 +45,7 @@ objects = []
 #old and ugly spheres
 objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
 objects.append(sphere(vector(0,0,300), 50, greenMat))
-objects.append(sphere(vector(20, 20, 280), 30, oliveMat))
+objects.append(sphere(vector(80, 0, 300), 30, oliveMat))
 objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), whiteMat))
 
 
@@ -70,14 +70,14 @@ def floatColToNum(color):
 
 	
 def AntyAliasing(camera,x,y,depth,iter=0):
-	cent = camera.parsePixel((x, y), sc)
+	cent = camera.parsePixel((x, y), sc, 2)
 	if(depth<0):
 		return cent
 	step = 1/((iter+1)*2)
-	LU = camera.parsePixel((x-step, y+step), sc)
-	LD = camera.parsePixel((x-step, y-step), sc)
-	RU = camera.parsePixel((x+step, y+step), sc)
-	RD = camera.parsePixel((x+step, y-step), sc)
+	LU = camera.parsePixel((x-step, y+step), sc, 2)
+	LD = camera.parsePixel((x-step, y-step), sc, 2)
+	RU = camera.parsePixel((x+step, y+step), sc, 2)
+	RD = camera.parsePixel((x+step, y-step), sc, 2)
 	if (iter < depth):
 		if(cent != LU):
 			LU = AntyAliasing(camera,x-(step/2),y+(step/2),depth,(iter+1))

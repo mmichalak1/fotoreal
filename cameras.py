@@ -40,8 +40,10 @@ def rectTexture(hit):
 	v = localHitPoint.z % hit.material.texture.height-1
 	return hit.material.texture.getRawPoint(u, v)
 		
-def phong(hit, Iray, scene):
+def phong(hit, Iray, scene, rec):
 	color = Color(rgb = (0.0,0.0,0.0))
+	
+
 	for light in scene.lights: 
 		hitToLight = (light.position - hit.hitPoint)
 		rayTolight = ray(hit.hitPoint, hitToLight.normalize(), hitToLight.getLength())
@@ -63,7 +65,22 @@ def phong(hit, Iray, scene):
 			diffCol = Color(rgb = (light.color.red * diff,light.color.green * diff, light.color.blue * diff))
 			color = addColor((specCol,color))
 			color = addColor((color,diffCol))
-	
+		else if rec > 0:
+			if hit.meterial.mirror:
+				reflVec = Iray.direction.normalize() - (2.0 * hit.normal.normalize() * (hit.normal.normalize() * Iray.direction.normalize())
+				reflRey = ray(hit.hitPoint, reflVec.normalize())
+				minDistance = sys.maxsize
+				reflHit = None
+				for obj in scene.objects:
+					if hit.hitObj != obj: 
+						tmpHit = reflRey.isColliding(obj)
+						if tmpHit != None
+							distance = (tmpHit.hitPoint - hit.hitPoint).getLength()
+							if ( distance < minDistance):
+								reflHit = tmpHit
+								minDistance = distance
+				if reflHit != None:
+					color addColor(phong(reflHit,reflRey, scene,rec-1), color)
 	ambCol = Color(rgb = (scene.ambientLight.red * hit.material.ambK,scene.ambientLight.green * hit.material.ambK, scene.ambientLight.blue * hit.material.ambK))
 	color = addColor((color,ambCol))
 	if(hit.material.texture != None):
@@ -87,7 +104,7 @@ class ortocam:
 		self.farPlane = farPlane
 		self.defcol = defcol
 		
-	def parsePixel(self, coord, scene):
+	def parsePixel(self, coord, scene, rec):
 		rayOrig = vector(self.basicOrig)
 		rayOrig += self.rightVector * self.stepx * coord[0]
 		rayOrig -= self.upVector * self.stepy * coord[1]
@@ -107,7 +124,7 @@ class ortocam:
 			return self.defcol
 		else:
 			# print("Hello")
-			return phong(hit.material, r,scene.ambientLight)
+			return phong(hit, r,scene, rec)
 	
 class perspectiveCam:
 	def __init__(self, position, direction, upVector, farPlane, nearPlane, fov, width, height, stepx, stepy):
@@ -127,7 +144,7 @@ class perspectiveCam:
 	def getProjectionDistance(self):
 		distance = (math.tan(math.radians(self.fov/2))) * self.width/2
 		return distance
-	def parsePixel(self, coord, scene):
+	def parsePixel(self, coord, scene, rec):
 		rayOrig = vector(self.basicOrig.x, self.basicOrig.y, self.basicOrig.z)
 		rayOrig += self.upVector.normalize().cross(self.direction.normalize()) * (self.stepx * coord[0])
 		rayOrig -= self.upVector.normalize() * self.stepy * coord[1]
@@ -145,4 +162,4 @@ class perspectiveCam:
 		if (hit == None):
 			return Color("Black")
 		else:
-			return phong(hit,r,scene)
+			return phong(hit,r,scene, rec)
