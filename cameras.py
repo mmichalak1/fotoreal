@@ -68,7 +68,7 @@ def phong(hit, Iray, scene, rec):
 		else:
 			if rec > 0:
 				if hit.material.mirror:
-					reflVec = Iray.direction.normalize() - (2.0 * hit.normal.normalize() * (hit.normal.normalize() * Iray.direction.normalize())
+					reflVec = Iray.direction.normalize() - (2.0 * hit.normal.normalize() * (hit.normal.normalize() * Iray.direction.normalize()))
 					reflRey = ray(hit.hitPoint, reflVec.normalize())
 					minDistance = sys.maxsize
 					reflHit = None
