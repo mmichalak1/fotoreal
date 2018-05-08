@@ -91,6 +91,8 @@ def phong(hit, Iray, scene, rec):
 			return mulCol(spericalTexture(hit), color)
 		elif hit.material.texture.type == 1:
 			return mulCol(rectTexture(hit), color)
+	else:
+		return color
 	
 
 class ortocam:
