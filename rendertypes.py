@@ -168,12 +168,13 @@ class scene:
 		self.lights = lights
 
 class material:
-	def __init__(self, dColor, ambCoeff, diffuseCoeff, specularCoeff, reflection, mirror,texture = None):
+	def __init__(self, dColor, ambCoeff, diffuseCoeff, specularCoeff, reflection, refraction ,mirror,texture = None):
 		self.dColor = dColor
 		self.ambK = ambCoeff
 		self.diffK = diffuseCoeff
 		self.specK = specularCoeff
 		self.refl = reflection
+		self.refraction = refraction
 		self.texture = texture
 		self.mirror = mirror
 		

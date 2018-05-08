@@ -27,11 +27,11 @@ text.load("phobos.gif")
 rectText = texture(340, 340, 1)
 rectText.load("rectTex.jpg")
 
-oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0, True)
-magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0, False)
-blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0, False)
-greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, True, text)
-whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0, False, rectText)
+oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0, 0, True)
+magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0, 0, False)
+blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0, 0, False)
+greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, 0, True, text)
+whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0, 0, False, rectText)
 
 objects = []
 

@@ -65,22 +65,25 @@ def phong(hit, Iray, scene, rec):
 			diffCol = Color(rgb = (light.color.red * diff,light.color.green * diff, light.color.blue * diff))
 			color = addColor((specCol,color))
 			color = addColor((color,diffCol))
-		else if rec > 0:
-			if hit.meterial.mirror:
-				reflVec = Iray.direction.normalize() - (2.0 * hit.normal.normalize() * (hit.normal.normalize() * Iray.direction.normalize())
-				reflRey = ray(hit.hitPoint, reflVec.normalize())
-				minDistance = sys.maxsize
-				reflHit = None
-				for obj in scene.objects:
-					if hit.hitObj != obj: 
-						tmpHit = reflRey.isColliding(obj)
-						if tmpHit != None
-							distance = (tmpHit.hitPoint - hit.hitPoint).getLength()
-							if ( distance < minDistance):
-								reflHit = tmpHit
-								minDistance = distance
-				if reflHit != None:
-					color addColor(phong(reflHit,reflRey, scene,rec-1), color)
+		else:
+			if rec > 0:
+				if hit.material.mirror:
+					reflVec = Iray.direction.normalize() - (2.0 * hit.normal.normalize() * (hit.normal.normalize() * Iray.direction.normalize())
+					reflRey = ray(hit.hitPoint, reflVec.normalize())
+					minDistance = sys.maxsize
+					reflHit = None
+					for obj in scene.objects:
+						if hit.hitObj != obj: 
+							tmpHit = reflRey.isColliding(obj)
+							if tmpHit != None
+								distance = (tmpHit.hitPoint - hit.hitPoint).getLength()
+								if ( distance < minDistance):
+									reflHit = tmpHit
+									minDistance = distance
+					if reflHit != None:
+						color = addColor(phong(reflHit,reflRey, scene,rec-1), color)
+				if hit.material.refraction > 1:
+					pass
 	ambCol = Color(rgb = (scene.ambientLight.red * hit.material.ambK,scene.ambientLight.green * hit.material.ambK, scene.ambientLight.blue * hit.material.ambK))
 	color = addColor((color,ambCol))
 	if(hit.material.texture != None):
