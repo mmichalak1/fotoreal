@@ -26,7 +26,7 @@ class ray:
 		if name == 'distance' and not isinstance(value, (int, float)):
 			raise TypeError('ray.distance must be a number')
 		super().__setattr__(name, value)
-	def isColliding(self, other):
+	def isColliding(self, other, obj = None):
 		if isinstance(other, sphere):
 			return coll.raySphereColl(self, other)
 		elif isinstance(other, plane):
@@ -35,6 +35,8 @@ class ray:
 			return coll.rayTriangleColl(self, other)
 		elif isinstance(other,mesh):
 			return coll.rayMeshColl(self,other)
+		elif isinstance(other,scene):
+			return coll.raySceneColl(self,other,obj)
 		else:
 			NotImplementedError
 	def __str__(self):

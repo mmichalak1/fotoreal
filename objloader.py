@@ -1,7 +1,7 @@
 from colour import *
 from rendertypes import *
 
-greyMat = material(Color("Blue"),0.5, 0.5, 0.5, 80.0)
+greyMat = material(Color("Blue"),0.5, 0.5, 0.5, 80.0,0, False)
 
 class parser:
 	def __init__(self):

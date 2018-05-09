@@ -47,20 +47,16 @@ def phong(hit, Iray, scene, rec):
 		if hit.material.mirror:
 			reflVec = Iray.direction.normalize() - (2.0 * hit.normal.normalize() * (hit.normal.normalize() * Iray.direction.normalize()))
 			reflRey = ray(hit.hitPoint, reflVec.normalize())
-			minDistance = sys.maxsize
-			reflHit = None
-			for obj in scene.objects:
-				if hit.hitObj != obj: 
-					tmpHit = reflRey.isColliding(obj)
-					if tmpHit != None
-						distance = (tmpHit.hitPoint - hit.hitPoint).getLength()
-						if ( distance < minDistance):
-							reflHit = tmpHit
-							minDistance = distance
+			reflHit = reflRey.isColliding(scene,hit.hitObj)
 			if reflHit != None:
 				color = addColor((phong(reflHit,reflRey, scene,rec-1), color))
-	if hit.material.refraction > 1:
-		pass
+		if hit.material.refraction > 1:
+			t = (Iray.direction.normalize() - hit.normal.normalize() *  (hit.normal.normalize() * Iray.direction.normalize())) / hit.material.refraction;
+			t -= hit.normal.normalize() * math.sqrt(1 - (1 -  (hit.normal.normalize() * Iray.direction.normalize())**2) / (hit.material.refraction **2));
+			refrRay = ray(hit.hitPoint,t)
+			refrHit = refrRay.isColliding(scene,hit.hitObj)
+			if refrHit != None:
+				color = addColor((phong(refrHit,refrRay, scene,rec-1), color))
 	for light in scene.lights: 
 		hitToLight = (light.position - hit.hitPoint)
 		rayTolight = ray(hit.hitPoint, hitToLight.normalize(), hitToLight.getLength())
@@ -90,7 +86,7 @@ def phong(hit, Iray, scene, rec):
 		elif hit.material.texture.type == 1:
 			return mulCol(rectTexture(hit), color)
 	else:
-		return color
+		return mulCol(hit.material.dColor , color)
 	
 
 class ortocam:
@@ -114,15 +110,7 @@ class ortocam:
 		# print(rayOrig)
 		r = ray(rayOrig, self.direction)
 		minDistance = self.farPlane
-		hit = None
-		# print(objects)
-		for obj in scene.objects:
-			tmp = r.isColliding(obj)
-			if tmp != None:
-				distance = (tmp.hitPoint - r.origin).getLength()
-				if ( distance < minDistance):
-					hit = tmp
-					minDistance = distance
+		hit = r.isColliding(scene)
 		if (hit == None):
 			return self.defcol
 		else:

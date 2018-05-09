@@ -27,12 +27,12 @@ text.load("phobos.gif")
 rectText = texture(340, 340, 1)
 rectText.load("rectTex.jpg")
 
-oliveMat = material(Color("olive"),0.2, 0.5, 0.5, 20.0, 0, True)
+oliveMat = material(Color("White"),0.2, 0.5, 0.5, 20.0, 2.5, False)
 magentaMat = material(Color("Magenta"),0.2, 0.5, 0.5, 40.0, 0, False)
 blueMat = material(Color("Blue"),0.2, 0.5, 0.5, 80.0, 0, False)
-greenMat = material(Color("Green"),0.2, 0.5, 0.5, 50.0, 0, True)
+greenMat = material(Color("White"),0.2, 0.5, 0.5, 50.0, 0, True)
 whiteMat = material(Color("White"),0.2, 0.5, 0.5, 100.0, 0, False)
-
+redMat = material(Color("Red"),0.2, 0.5, 0.5, 100.0, 0, False)
 objects = []
 
 #new best cube
@@ -43,10 +43,13 @@ objects = []
 #objects.append(mesh(prs.triangles))
 
 #old and ugly spheres
-objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
-objects.append(sphere(vector(-20,0,200), 90, greenMat))
-objects.append(sphere(vector(100, 0, 200), 80, oliveMat))
+#objects.append(triangle(vector(-100, -20, 150), vector(-20, 110, 150), vector(0, 0, 150), magentaMat))
+objects.append(sphere(vector(-100,60,200), 90, greenMat))
+objects.append(sphere(vector(100, 60, 200), 80, oliveMat))
 objects.append(plane(vector(0,-10,800), vector(0,1,0).normalize(), whiteMat))
+objects.append(plane(vector(-250,-10,800), vector(1,0,0).normalize(), magentaMat))
+objects.append(plane(vector(250,-10,800), vector(-1,0,0).normalize(), blueMat))
+objects.append(plane(vector(0,-10,800), vector(0,0,-1).normalize(), redMat))
 
 
 lights = []

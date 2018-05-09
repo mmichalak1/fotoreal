@@ -1,6 +1,31 @@
 import rendertypes as rt
 import math
+import sys
 EPS = 1e-6
+
+
+def raySceneColl(r, s, ignoredObject = None):
+	minDistance = sys.maxsize
+	hit = None
+	# print(objects)
+	if ignoredObject != None:
+		for obj in s.objects:
+			if ignoredObject != obj:
+				tmp = r.isColliding(obj)
+				if tmp != None:
+					distance = (tmp.hitPoint - r.origin).getLength()
+					if ( distance < minDistance):
+						hit = tmp
+						minDistance = distance
+	else:
+		for obj in s.objects:
+			tmp = r.isColliding(obj)
+			if tmp != None:
+				distance = (tmp.hitPoint - r.origin).getLength()
+				if ( distance < minDistance):
+					hit = tmp
+					minDistance = distance
+	return hit
 
 #bazowane w wzorze ax^2 + bx + c gdzie:
 #v = s.center - p.origin
